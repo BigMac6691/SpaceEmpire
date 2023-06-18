@@ -1,0 +1,29 @@
+{
+  "name": "myspaceempire",
+  "version": "1.0.0",
+  "description": "Basic strategic game set in space.",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BigMac6691/MySpaceEmpire.git"
+  },
+  "keywords": [
+    "strategy",
+    "war",
+    "game",
+    "space"
+  ],
+  "author": "Best Dad Ever",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BigMac6691/MySpaceEmpire/issues"
+  },
+  "homepage": "https://github.com/BigMac6691/MySpaceEmpire#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "winston": "^3.9.0"
+  }
+}
