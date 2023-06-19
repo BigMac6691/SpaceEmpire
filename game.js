@@ -11,6 +11,7 @@ app.use(express.static(path.join(__dirname, '/public/')));
 // Set up routes
 app.get('/', (req, res) => 
 {
+  logger('Sending index file...');
   res.sendFile(__dirname + '/index.html');
 });
 
