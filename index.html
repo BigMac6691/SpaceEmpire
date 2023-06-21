@@ -5,10 +5,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>My Space Empire</title>
         <link rel="stylesheet" href="css/main.css">
+		<script src="js/Curve.js"></script>
+		<script>
+			function init()
+			{
+				let data = [[1, 9], [2, 19], [3, 33]];
+				let curve = new Curve(data);
+			}
+		</script>
 	</head>
-	<body>
+	<body onload="javascropt:init();">
 		<h1>My Space Empire</h1>
-
-		
 	</body>
 </html>
