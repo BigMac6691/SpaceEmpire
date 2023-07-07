@@ -6,15 +6,28 @@
 		<title>My Space Empire</title>
         <link rel="stylesheet" href="css/main.css">
 		<script src="js/Curve.js"></script>
+		<script src="js/DesignEnergyWeapon.js"></script>
+		<script src="js/UI.js"></script>
+		<script src="js/Technology.js"></script>
+		<script src="js/I18N.js"></script>
 		<script>
 			function init()
 			{
-				let data = [[1, 9], [2, 19], [3, 33]];
+				// let data = [[1, 9], [2, 19], [3, 33]];
+				let data = [[0, 0.75], [0.1, 1.0], [0.6, 0.25], [1, 0.01]];
 				let curve = new Curve(data);
+
+				for(let x = 0; x <= 1; x += 0.1)
+					console.log(x + "=" + (1 / curve.getValueAt(x)));
+
+				let tech = new Technology();
+				let dew = new DesignEnergyWeapon(tech, document.getElementById("design.weapons.energy"));
 			}
 		</script>
 	</head>
-	<body onload="javascropt:init();">
+	<body onload="javascript:init();">
 		<h1>My Space Empire</h1>
+		<div id="design.weapons.energy" class="design">
+		</div>
 	</body>
 </html>

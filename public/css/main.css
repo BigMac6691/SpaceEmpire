@@ -1,7 +1,45 @@
 body
 {
     background-color: black;
-    color : gold;
+}
+
+h1, h2
+{
+    color: gold;
     text-align: center;
 }
 
+input
+{
+    padding: 0.4em 0.5em;
+}
+
+.design
+{
+    color: lightskyblue;
+}
+
+.designGrid
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1em;
+    row-gap: 0.5em;
+}
+
+.designGrid :nth-child(odd)
+{
+    color: green;
+    justify-self: end;
+}
+
+.designGrid :nth-child(even)
+{
+    color: lightgray;
+    justify-self: start;
+}
+
+.error
+{
+    border-color: red;
+}
