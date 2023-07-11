@@ -1,0 +1,12 @@
+Allow for different types of materials with different properties and costs.
+
+Rare materials may be required for some components.
+
+Use a normalized curve to define scarity of raw materials on a planet.
+From this you can calculate cost based on that scarcity.
+
+For example:
+Material for a coupling is 
+    70% material index 0.1372
+    20% material index 0.4884
+    10% material index 0.9884

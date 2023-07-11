@@ -19,24 +19,55 @@ input
     color: lightskyblue;
 }
 
+.designFooter
+{
+    color: white;
+}
+
+.designFooter span
+{
+    color: lightgreen;
+    font-weight: bold;
+}
+
+.designFooter input[type="range"]
+{
+    padding: 0;
+    width: 10em;
+}
+
 .designGrid
 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 9em 9em 9em 3fr;
+    justify-items: center;
+    align-items: center;
     column-gap: 1em;
     row-gap: 0.5em;
 }
 
-.designGrid :nth-child(odd)
+.designGrid :nth-child(5n+1)
 {
-    color: green;
+    color: lightgreen;
     justify-self: end;
 }
 
-.designGrid :nth-child(even)
+.designGrid :nth-child(5n+1) input
+{
+    color: black;
+}
+
+.designGrid :nth-child(5n+5)
 {
     color: lightgray;
     justify-self: start;
+}
+
+.designGrid input
+{
+    color: black;
+    width: 9em;
+    text-align: right;
 }
 
 .error

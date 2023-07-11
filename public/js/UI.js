@@ -29,4 +29,15 @@ class UI
 
         return n;
     }
+
+    static create(type, opts)
+    {
+        const n = document.createElement(type);
+
+        if(opts !== undefined)
+            for(const [k, v] of Object.entries(opts))
+                n[k] = v;
+
+        return n;
+    }
 }

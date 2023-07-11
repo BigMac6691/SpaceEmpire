@@ -8,12 +8,12 @@ class I18N
         I18N.text.set("design.weapon.energy.frequency", "Base frequency of emitter.");
         I18N.text.set("design.weapon.energy.bore", "The diameter of the beam emitter.  Larger values here result in longer ranges."); //Θ = λ / (π * d)
         I18N.text.set("design.weapon.energy.capacitor", "A device to store power, can not be smaller than power.");
-        I18N.text.set("design.weapon.energy.coupling", "The rate at which enrgy can be sent to the capactior.");
+        I18N.text.set("design.weapon.energy.coupling", "The rate at which energy can be sent to the capactior.");
 
         I18N.text.set("design.name", "Short name.");
         I18N.text.set("design.mass", "Mass");
         I18N.text.set("design.volume", "Volume");
-        I18N.text.set("design.cost", "How much money it takes to build.");
+        I18N.text.set("design.cost", "Cost");
     }
 
     static getText(key, dflt)
