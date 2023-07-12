@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="css/main.css">
 		<script src="js/Curve.js"></script>
 		<script src="js/DesignEnergyWeapon.js"></script>
+		<script src="js/EnergyWeapon.js"></script>
 		<script src="js/UI.js"></script>
 		<script src="js/Technology.js"></script>
 		<script src="js/I18N.js"></script>
@@ -18,13 +19,6 @@
 
 				let tech = new Technology();
 				let dew = new DesignEnergyWeapon(tech, document.getElementById("design.weapons.energy"));
-
-				// let data = [[1, 9], [2, 19], [3, 33]];
-				// let data = [[0, 0.75], [0.1, 1.0], [0.6, 0.25], [1, 0.01]];
-				let curve = tech.get("emitter.power").mass;
-
-				for(let x = 0; x <= 10000; x += 100)
-					console.log(x + "=" + (curve.getValueAt(x)));
 			}
 		</script>
 	</head>

@@ -19,6 +19,26 @@ input
     color: lightskyblue;
 }
 
+.design select
+{
+    width: 10em;
+}
+
+.design option
+{
+    padding: 0.1em;;
+}
+
+.design .obsolete
+{
+    text-decoration: line-through;
+}
+
+.design .used
+{
+    font-weight: bold;
+}
+
 .designFooter
 {
     color: white;

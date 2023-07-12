@@ -2,9 +2,12 @@ class DesignEnergyWeapon
 {
     constructor(techBase, root)
     {
+        this.nextId = 1;
         this.tech = techBase;
 
         this.root = root;
+        this.current = null;
+        this.designs = [];
         this.massList = new Map();
         this.volumeList = new Map();
         this.costList = new Map();
@@ -13,13 +16,22 @@ class DesignEnergyWeapon
         this.update();
     }
 
-    // add a list
+    // can edit - if not in use or obsolete
+    // selecting automatically updates display
 
     init()
     {
-        this.root.append(UI.createTextNode("h2", "Design Energy Weapons"));
+        this.filterObsolete = UI.createInput("checkbox");
+        this.filterObsolete.addEventListener("change", evt => this.toggleObsolete(evt));
+        this.filterInuse = UI.createInput("checkbox");
+        this.filterInuse.addEventListener("change", evt => this.toggleInuse(evt));
 
-        this.designs = new List(this.root);
+        this.root.append(UI.createTextNode("h2", "Design Energy Weapons"),
+                         UI.createLabel("Do not show obsolete ", this.filterObsolete),
+                         UI.createLabel("Do not show in use ", this.filterInuse));
+
+        this.designList = new List(this.root);
+        this.designList.getList().addEventListener("change", evt => this.selectionChange(evt));
 
         this.name = UI.createInput("text");
         this.power = UI.createInput("number", {value : 1});
@@ -50,9 +62,9 @@ class DesignEnergyWeapon
         this.grid.classList.add("designGrid");
 
         this.grid.append(UI.createTextNode("span", " "),
-                         UI.createTextNode("span", "Mass"),
-                         UI.createTextNode("span", "Volume"),
-                         UI.createTextNode("span", "Cost"),
+                         UI.createTextNode("span", "Mass (kg)"),
+                         UI.createTextNode("span", "Volume (m^3)"),
+                         UI.createTextNode("span", "Cost ($)"),
                          UI.createTextNode("span", " "));
         this.grid.append(UI.createLabel("Power:", this.power),
                          this.massList.get(this.power),
@@ -91,22 +103,92 @@ class DesignEnergyWeapon
         this.summary = document.createElement("p");
         this.summary.innerHTML = "The range at which emitted power is reduced to <span id='dew.percentage'></span>% is <span id='dew.range'></span>km.  The effective energy at that range is <span id='dew.effective'></span>.  The initial rate of fire is <span id='dew.rate'></span> and the sustained rate is <span id='dew.sustained'></span>.";
 
-        this.save = UI.createTextNode("button", "Save");
-        this.save.addEventListener("click", evt => this.validate(evt));
+        this.createButton = UI.createTextNode("button", "Create");
+        this.createButton.addEventListener("click", evt => this.createDesign(evt));
+
+        this.updateButton = UI.createTextNode("button", "Update");
+        this.updateButton.addEventListener("click", evt => this.updateDesign(evt));
+
+        this.deleteButton = UI.createTextNode("button", "Delete");
+        this.deleteButton.addEventListener("click", evt => this.deleteDesign(evt));
 
         this.footer = document.createElement("div");
         this.footer.classList.add("designFooter");
         this.footer.append(UI.createLabel("Power density:", this.range),
                         this.summary,
-                        this.save);
+                        this.createButton,
+                        this.updateButton,
+                        this.deleteButton);
 
         this.root.append(this.grid, this.footer);
-    }   
+    }  
+    
+    selectionChange(evt)
+    {
+        console.log("selection change...");
+    }
+
+    checkForDuplicate(name)
+    {
+
+    }
+
+    createDesign(evt)
+    {
+        if(this.validate(evt))
+            return;
+
+        let design = new EnergyWeapon();
+        design.id = "EWD." + this.nextId++;
+        design.name = this.name.value;
+        design.power = this.power.value;
+        design.frequency = this.frequency.value;
+        design.bore = this.bore.value;
+        design.capictor = this.capacitor.value;
+        design.coupling = this.coupling.value;
+        design.mass = this.mass.value;
+        design.volume = this.volume.value;
+        design.cost = this.cost.value;
+
+        this.designs.push(design);
+        this.current =  design;
+
+        this.designList.add({value : design.id, innerHTML : design.name});
+    }
+
+    updateDesign(evt)
+    {
+        if(this.validate(evt) || this.current == null)
+            return;
+
+        this.current.name = this.name.value;
+        this.current.power = this.power.value;
+        this.current.frequency = this.frequency.value;
+        this.current.bore = this.bore.value;
+        this.current.capictor = this.capacitor.value;
+        this.current.coupling = this.coupling.value;
+        this.current.mass = this.mass.value;
+        this.current.volume = this.volume.value;
+        this.current.cost = this.cost.value;
+
+        this.designList.update(this.current.id, this.current.name);
+    }
+
+    deleteDesign(evt)
+    {
+        if(this.current == null)
+            return;
+
+        this.current.isObsolete = true;
+
+        const option = this.designList.getSelected();
+        
+        if(option != null)
+            option.classList.add("obsolete");
+    }
 
     validate(evt)
     {
-        console.log("validating...");
-
         if(this.name.value == "")
             this.name.classList.add("error");
         else
@@ -138,8 +220,6 @@ class DesignEnergyWeapon
             this.coupling.classList.remove("error");
 
         const n = this.root.querySelectorAll(".error");
-
-        console.log("validate resulted in " + n.length);
 
         return n.length > 0;
     }
@@ -199,5 +279,15 @@ class DesignEnergyWeapon
         let sumCost = 0;
         this.costList.forEach(v => sumCost += +v.value);
         this.cost.value = sumCost.toFixed(2);
+    }
+
+    toggleObsolete(evt)
+    {
+        console.log("toggle obsolete...");
+    }
+
+    toggleInuse(evt)
+    {
+        console.log("toggle in use...");
     }
 }

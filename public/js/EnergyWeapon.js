@@ -2,13 +2,28 @@ class EnergyWeapon
 {
     constructor()
     {
+        this.id;
+        this.name;
         this.power;
         this.frequency;
         this.bore;
         this.capictor;
-        this.chargeRate;
+        this.coupling;
         this.mass;
         this.volume;
         this.cost;
+
+        this.obsolete = false;
+        this.inUse = false;
+    }
+
+    isObsolete()
+    {
+        return this.obsolete;
+    }
+
+    isUsed()
+    {
+        return this.inUse;
     }
 }
