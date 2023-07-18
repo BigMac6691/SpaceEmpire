@@ -30,6 +30,12 @@ class List
             }
     }
 
+    clear()
+    {
+        while(this.list.options.length)
+            this.list.remove(0);
+    }
+
     remove(value)
     {
         for(let i = 0; i < this.list.options.length; i++)

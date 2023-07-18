@@ -21,17 +21,24 @@ class DesignEnergyWeapon
 
     init()
     {
+        const header = UI.create("div");
+        header.classList.add("header");
+        this.root.append(UI.createTextNode("h2", "Design Energy Weapons"));
+
+        const filters = document.createElement("div");
+        
         this.filterObsolete = UI.createInput("checkbox");
         this.filterObsolete.addEventListener("change", evt => this.toggleObsolete(evt));
         this.filterInuse = UI.createInput("checkbox");
         this.filterInuse.addEventListener("change", evt => this.toggleInuse(evt));
 
-        this.root.append(UI.createTextNode("h2", "Design Energy Weapons"),
-                         UI.createLabel("Do not show obsolete ", this.filterObsolete),
-                         UI.createLabel("Do not show in use ", this.filterInuse));
+        filters.append(UI.createLabel("Hide obsolete ", this.filterObsolete),
+                       UI.createLabel(" Hide in use ", this.filterInuse));
 
-        this.designList = new List(this.root);
-        this.designList.getList().addEventListener("change", evt => this.selectionChange(evt));
+        header.append(filters);
+
+        this.designList = new List(header);
+        this.designList.getList().addEventListener("change", evt => this.selectionChange(evt));      
 
         this.name = UI.createInput("text");
         this.power = UI.createInput("number", {value : 1});
@@ -56,7 +63,9 @@ class DesignEnergyWeapon
         this.volume = UI.createInput("number", {disabled : true});
         this.cost = UI.createInput("number", {disabled : true});
 
-        this.root.append(UI.createLabel("Name:", this.name));
+        header.append(UI.createLabel("Name:", this.name));
+
+        this.root.append(header);
 
         this.grid = document.createElement("div");
         this.grid.classList.add("designGrid");
@@ -122,15 +131,42 @@ class DesignEnergyWeapon
 
         this.root.append(this.grid, this.footer);
     }  
+
+    loadFile()
+    {
+
+    }
+
+    saveFile()
+    {
+
+    }
     
     selectionChange(evt)
     {
-        console.log("selection change...");
+        this.current = this.designs.find(i => i.id === this.designList.getSelected().value);
+
+        if(this.current == null)
+            return;
+
+        this.display(this.current);
+    }
+
+    display(design)
+    {
+        this.name.value = design.name;
+        this.power.value = design.power;
+        this.frequency.value = design.frequency;
+        this.bore.value = design.bore;
+        this.capacitor.value = design.capacitor;
+        this.coupling.value = design.coupling;
+
+        this.update(null);
     }
 
     checkForDuplicate(name)
     {
-
+        return this.designs.some(i => i.name === name);
     }
 
     createDesign(evt)
@@ -138,13 +174,19 @@ class DesignEnergyWeapon
         if(this.validate(evt))
             return;
 
+        if(this.checkForDuplicate(this.name.value))
+        {
+            alert("Name already being used.");
+            return;
+        }
+
         let design = new EnergyWeapon();
         design.id = "EWD." + this.nextId++;
         design.name = this.name.value;
         design.power = this.power.value;
         design.frequency = this.frequency.value;
         design.bore = this.bore.value;
-        design.capictor = this.capacitor.value;
+        design.capacitor = this.capacitor.value;
         design.coupling = this.coupling.value;
         design.mass = this.mass.value;
         design.volume = this.volume.value;
@@ -283,11 +325,21 @@ class DesignEnergyWeapon
 
     toggleObsolete(evt)
     {
-        console.log("toggle obsolete...");
+        const list = this.designList.getList().querySelectorAll(".obsolete");
+
+        if(this.filterObsolete.checked)
+            list.forEach(i => i.style.display = "none");
+        else
+            list.forEach(i => i.style.display = "block");
     }
 
     toggleInuse(evt)
     {
-        console.log("toggle in use...");
+        const list = this.designList.getList().querySelectorAll(".used");
+
+        if(this.filterObsolete.checked)
+            list.forEach(i => i.style.display = "none");
+        else
+            list.forEach(i => i.style.display = "block");
     }
 }

@@ -21,7 +21,7 @@ input
 
 .design select
 {
-    width: 10em;
+    width: 15em;
 }
 
 .design option
@@ -31,12 +31,21 @@ input
 
 .design .obsolete
 {
-    text-decoration: line-through;
+    font-style: italic;
 }
 
 .design .used
 {
     font-weight: bold;
+}
+
+.design .header
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.5em;
+    margin-bottom: 1em;
 }
 
 .designFooter

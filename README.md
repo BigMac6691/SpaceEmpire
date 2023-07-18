@@ -1,6 +1,8 @@
 # SpaceEmpire
 Basic strategic space war game.
 
+Start server with node game.js
+
 SUP = Standard Unit of Power
 
 So optimal laser has 1kSUP power.
