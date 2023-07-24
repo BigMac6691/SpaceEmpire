@@ -14,8 +14,36 @@ input
     padding: 0.4em 0.5em;
 }
 
+/* Menu */
+.menu
+{
+    background-color: gray;
+    padding: 0.25em;
+    margin: 0.25em;
+}
+
+.menu a
+{
+    color: lightblue;
+    padding: 0.5em;
+    text-decoration: none;
+}
+
+.menu a:hover
+{
+    color: blue;
+    background-color: lightgray;
+}
+
+.menu a.active
+{
+    background-color: black;
+}
+
+/* Design */
 .design
 {
+    display: none;
     color: lightskyblue;
 }
 

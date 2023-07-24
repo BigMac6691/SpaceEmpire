@@ -16,9 +16,6 @@ class DesignEnergyWeapon
         this.update();
     }
 
-    // can edit - if not in use or obsolete
-    // selecting automatically updates display
-
     init()
     {
         const header = UI.create("div");
@@ -132,12 +129,12 @@ class DesignEnergyWeapon
         this.root.append(this.grid, this.footer);
     }  
 
-    loadFile()
+    load()
     {
 
     }
 
-    saveFile()
+    save()
     {
 
     }
