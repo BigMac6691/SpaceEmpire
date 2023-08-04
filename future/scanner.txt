@@ -1,0 +1,10 @@
+Scanner features for later:
+
+Active vs passive
+Search vs Tracking vs Targeting
+Frequency
+Beam width
+Size - which roughly equates to gain
+
+EXCELLENT resource for radar calculation  details:
+https://www.ll.mit.edu/sites/default/files/outreach/doc/2018-07/lecture%202.pdf

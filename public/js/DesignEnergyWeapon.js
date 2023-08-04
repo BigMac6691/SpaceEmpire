@@ -280,10 +280,10 @@ class DesignEnergyWeapon
         const e = this.power.value * a;
 
         document.getElementById("dew.percentage").textContent = this.range.value;
-        document.getElementById("dew.range").textContent = Math.ceil(d / 1000).toLocaleString("en-CA");
-        document.getElementById("dew.effective").textContent = e.toLocaleString("en-CA");
-        document.getElementById("dew.rate").textContent = rate.toLocaleString("en-CA");
-        document.getElementById("dew.sustained").textContent = sustained.toLocaleString("en-CA");
+        document.getElementById("dew.range").textContent = (d / 1000).toLocaleString(undefined, K.NF2);
+        document.getElementById("dew.effective").textContent = (+e).toLocaleString(undefined, K.NF2);
+        document.getElementById("dew.rate").textContent = (+rate).toLocaleString(undefined, K.NF2);
+        document.getElementById("dew.sustained").textContent = (+sustained).toLocaleString(undefined, K.NF2);
 
         const list = [this.power, this.frequency, this.bore, this.capacitor, this.coupling];
         const techKey = new Map();
@@ -301,23 +301,23 @@ class DesignEnergyWeapon
             {
                 let tc = this.tech.get(t);
 
-                this.massList.get(i).value = tc.mass.getValueAt(i.value).toFixed(2);
-                this.volumeList.get(i).value = tc.volume.getValueAt(i.value).toFixed(2);
-                this.costList.get(i).value = tc.cost.getValueAt(i.value).toFixed(2);
+                this.massList.get(i).value = tc.mass.getValueAt(i.value).toLocaleString(undefined, K.NF2);
+                this.volumeList.get(i).value = tc.volume.getValueAt(i.value).toLocaleString(undefined, K.NF2);
+                this.costList.get(i).value = tc.cost.getValueAt(i.value).toLocaleString(undefined, K.NF2);
             }
         });
 
         let sumMass = 0;
         this.massList.forEach(v => sumMass += +v.value);
-        this.mass.value = sumMass.toFixed(2);
+        this.mass.value = sumMass.toLocaleString(undefined, K.NF2);
 
         let sumVolume = 0;
         this.volumeList.forEach(v => sumVolume += +v.value);
-        this.volume.value = sumVolume.toFixed(2);
+        this.volume.value = sumVolume.toLocaleString(undefined, K.NF2);
 
         let sumCost = 0;
         this.costList.forEach(v => sumCost += +v.value);
-        this.cost.value = sumCost.toFixed(2);
+        this.cost.value = sumCost.toLocaleString(undefined, K.NF2);
     }
 
     toggleObsolete(evt)

@@ -87,11 +87,11 @@ class DesignMissileWeapon
                          this.cost,
                          UI.createTextNode("span", " "));
 
-        this.range = UI.createInput("range", {min : 1, max : 100});
+        this.range = UI.createInput("range", {min : 1, max : 10000, value : 5000});
         this.range.addEventListener("input", evt => this.update(evt));
 
         this.summary = document.createElement("p");
-        this.summary.innerHTML = "";
+        this.summary.innerHTML = "<p>Acceleration is <span id='dmw.accel'></span>. Powered range is <span id='dmw.range'></span>.<p>Maximum range object with RCS of <span id='dmw.rcs'></span>m<sup>2</sup> can be detected is <span id='dmw.scan'></span>km.</p>";
 
         this.createButton = UI.createTextNode("button", "Create");
         this.createButton.addEventListener("click", evt => this.createDesign(evt));
@@ -104,7 +104,7 @@ class DesignMissileWeapon
 
         this.footer = document.createElement("div");
         this.footer.classList.add("designFooter");
-        this.footer.append(UI.createLabel("Power density:", this.range),
+        this.footer.append(UI.createLabel("Effective RCS:", this.range),
                         this.summary,
                         this.createButton,
                         this.updateButton,
@@ -113,28 +113,44 @@ class DesignMissileWeapon
         this.root.append(this.grid, this.footer);
     }
 
+    validate()
+    {
+        console.log("Design Missile Weapon validate() called...");
+    }
+
     update()
     {
+        const DRIVE = 2, FUEL = 3, SCANNER = 8;
+
         for(let i = 1; i < this.fields.length; i++)
         {
             let input = this.fields[i].input;
             let tc = this.tech.get("missile." + this.fields[i].name.toLowerCase());
 
-            this.massList.get(input).value = tc.mass.getValueAt(input.value).toFixed(2);
-            this.volumeList.get(input).value = tc.volume.getValueAt(input.value).toFixed(2);
-            this.costList.get(input).value = tc.cost.getValueAt(input.value).toFixed(2);
+            this.massList.get(input).value = tc.mass.getValueAt(input.value).toLocaleString(undefined, K.NF2);
+            this.volumeList.get(input).value = tc.volume.getValueAt(input.value).toLocaleString(undefined, K.NF2);
+            this.costList.get(input).value = tc.cost.getValueAt(input.value).toLocaleString(undefined, K.NF2);
         };
 
         let sumMass = 0;
         this.massList.forEach(v => sumMass += +v.value);
-        this.mass.value = sumMass.toFixed(2);
+        this.mass.value = sumMass.toLocaleString(undefined, K.NF2);
 
         let sumVolume = 0;
         this.volumeList.forEach(v => sumVolume += +v.value);
-        this.volume.value = sumVolume.toFixed(2);
+        this.volume.value = sumVolume.toLocaleString(undefined, K.NF2);
 
         let sumCost = 0;
         this.costList.forEach(v => sumCost += +v.value);
-        this.cost.value = sumCost.toFixed(2);
+        this.cost.value = sumCost.toLocaleString(undefined, K.NF2);
+
+        const a = this.fields[DRIVE].input.value / sumMass;
+        const r = this.fields[FUEL].input.value ** 2 / (2 * sumMass * this.fields[DRIVE].input.value);
+        const sr = Math.pow(((1000 * this.fields[SCANNER].input.value) ** 2 * this.range.value) / K.SBW, 0.25);
+
+        document.getElementById("dmw.accel").textContent = (+a).toLocaleString(undefined, K.NF2);
+        document.getElementById("dmw.range").textContent = (+r).toLocaleString(undefined, K.NF2);
+        document.getElementById("dmw.rcs").textContent = (+this.range.value).toLocaleString(undefined, K.NF0);
+        document.getElementById("dmw.scan").textContent = (+sr).toLocaleString(undefined, K.NF2);
     }
 }

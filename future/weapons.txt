@@ -1,1 +1,7 @@
 For the first version go with single drive missiles.
+
+Energy weapons are essentially lasers.
+
+Consider adding particle beam and "macrons".
+
+Also consider simple kinetic.
