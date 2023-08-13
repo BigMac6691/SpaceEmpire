@@ -10,14 +10,17 @@ class UI
         return n;
     }
 
-    static createInput(type, opts)
+    static createInput(type, opts, clazz)
     {
         const n = document.createElement("input");
         n.type = type;
 
-        if(opts !== undefined)
+        if(opts)
             for(const [k, v] of Object.entries(opts))
                 n[k] = v;
+
+        if(clazz)
+            clazz.forEach(c => n.classList.add(c));
 
         return n;
     }
@@ -30,13 +33,16 @@ class UI
         return n;
     }
 
-    static create(type, opts)
+    static create(type, opts, clazz)
     {
         const n = document.createElement(type);
 
-        if(opts !== undefined)
+        if(opts)
             for(const [k, v] of Object.entries(opts))
                 n[k] = v;
+
+        if(clazz)
+            clazz.forEach(c => n.classList.add(c));
 
         return n;
     }

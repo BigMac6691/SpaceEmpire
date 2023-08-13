@@ -55,3 +55,6 @@ Consider:
 
 hit probability = Ps / (Ps + Pj) at the range the weapon was fired.
       For missiles that would be when they detonate (and trigger lasers)
+
+
+Need to settle on units and scale for all numbers to be somewhat consistent.

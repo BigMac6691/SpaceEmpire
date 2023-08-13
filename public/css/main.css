@@ -47,6 +47,12 @@ input
     color: lightskyblue;
 }
 
+.design .textDiv
+{
+    color: white;
+    justify-self: end;
+}
+
 .design select
 {
     width: 15em;
