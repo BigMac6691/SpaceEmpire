@@ -8,6 +8,7 @@ class DesignEnergyWeapon
         this.root = root;
         this.current = null;
         this.designs = [];
+        this.fields = [];
         this.massList = new Map();
         this.volumeList = new Map();
         this.costList = new Map();
@@ -37,30 +38,29 @@ class DesignEnergyWeapon
         this.designList = new List(header);
         this.designList.getList().addEventListener("change", evt => this.selectionChange(evt));      
 
-        this.name = UI.createInput("text");
-        this.power = UI.createInput("number", {value : 1});
-        this.frequency = UI.createInput("number", {value : 1});
-        this.bore = UI.createInput("number", {value : 1});
-        this.capacitor = UI.createInput("number", {value : 1});
-        this.coupling = UI.createInput("number", {value : 1});
+        const D = 13;
+        const f = ["Name", "Power", "Frequency", "Bore", "Capacitor", "Coupling"];
 
-        const list = [this.power, this.frequency, this.bore, this.capacitor, this.coupling];
-
-        list.forEach(i => 
+        f.forEach(i => 
         {
-            i.addEventListener("change", evt => this.validate(evt));
-            i.addEventListener("change", evt => this.update(evt));
+            const n = i === "Name" ? UI.createInput("text")
+                                   : UI.createInput("number", {value : 1});
 
-            this.massList.set(i, UI.createInput("number", {disabled : true}));
-            this.volumeList.set(i, UI.createInput("number", {disabled : true}));
-            this.costList.set(i, UI.createInput("number", {disabled : true}));
+            n.addEventListener("change", evt => this.validate(evt));
+            n.addEventListener("change", evt => this.update(evt));
+
+            this.massList.set(n, new DisplayNumber(D));
+            this.volumeList.set(n, new DisplayNumber(D));
+            this.costList.set(n, new DisplayNumber(D));
+
+            this.fields.push({name:i, input: n});
         });
 
-        this.mass = UI.createInput("number", {disabled : true});
-        this.volume = UI.createInput("number", {disabled : true});
-        this.cost = UI.createInput("number", {disabled : true});
+        this.mass = new DisplayNumber(D);
+        this.volume = new DisplayNumber(D);
+        this.cost = new DisplayNumber(D);
 
-        header.append(UI.createLabel("Name:", this.name));
+        header.append(UI.createLabel("Name:", this.fields[0].input));
 
         this.root.append(header);
 
@@ -72,35 +72,21 @@ class DesignEnergyWeapon
                          UI.createTextNode("span", "Volume (m^3)"),
                          UI.createTextNode("span", "Cost ($)"),
                          UI.createTextNode("span", " "));
-        this.grid.append(UI.createLabel("Power:", this.power),
-                         this.massList.get(this.power),
-                         this.volumeList.get(this.power),
-                         this.costList.get(this.power), 
-                         UI.createTextNode("span", I18N.getText("design.weapon.energy.power")));
-        this.grid.append(UI.createLabel("Frequency (THz):", this.frequency), 
-                         this.massList.get(this.frequency),
-                         this.volumeList.get(this.frequency),
-                         this.costList.get(this.frequency),
-                         UI.createTextNode("span", I18N.getText("design.weapon.energy.frequency")));
-        this.grid.append(UI.createLabel("Bore:", this.bore), 
-                         this.massList.get(this.bore),
-                         this.volumeList.get(this.bore),
-                         this.costList.get(this.bore),
-                         UI.createTextNode("span", I18N.getText("design.weapon.energy.bore")));
-        this.grid.append(UI.createLabel("Capacitor:", this.capacitor), 
-                         this.massList.get(this.capacitor),
-                         this.volumeList.get(this.capacitor),
-                         this.costList.get(this.capacitor),
-                         UI.createTextNode("span", I18N.getText("design.weapon.energy.capacitor")));
-        this.grid.append(UI.createLabel("Coupling:", this.coupling), 
-                         this.massList.get(this.coupling),
-                         this.volumeList.get(this.coupling),
-                         this.costList.get(this.coupling),
-                         UI.createTextNode("span", I18N.getText("design.weapon.energy.coupling")));
+
+        // add input and display fields to screen
+        for(let i = 1; i < this.fields.length; i++)
+        {
+            this.grid.append(UI.createLabel(this.fields[i].name + ":", this.fields[i].input),
+                this.massList.get(this.fields[i].input).getNode(),
+                this.volumeList.get(this.fields[i].input).getNode(),
+                this.costList.get(this.fields[i].input).getNode(), 
+                UI.createTextNode("span", I18N.getText("design.weapon.energy." + this.fields[i].name.toLowerCase())));
+        }
+
         this.grid.append(UI.createTextNode("span", "Total:"), 
-                         this.mass, 
-                         this.volume,
-                         this.cost,
+                         this.mass.getNode(), 
+                         this.volume.getNode(),
+                         this.cost.getNode(),
                          UI.createTextNode("span", " "));
 
         this.range = UI.createInput("range", {min : 1, max : 100});
@@ -151,12 +137,7 @@ class DesignEnergyWeapon
 
     display(design)
     {
-        this.name.value = design.name;
-        this.power.value = design.power;
-        this.frequency.value = design.frequency;
-        this.bore.value = design.bore;
-        this.capacitor.value = design.capacitor;
-        this.coupling.value = design.coupling;
+        this.fields.forEach(f => f.input.value = design[f.name.toLowerCase()]);
 
         this.update(null);
     }
@@ -179,15 +160,8 @@ class DesignEnergyWeapon
 
         let design = new EnergyWeapon();
         design.id = "EWD." + this.nextId++;
-        design.name = this.name.value;
-        design.power = this.power.value;
-        design.frequency = this.frequency.value;
-        design.bore = this.bore.value;
-        design.capacitor = this.capacitor.value;
-        design.coupling = this.coupling.value;
-        design.mass = this.mass.value;
-        design.volume = this.volume.value;
-        design.cost = this.cost.value;
+
+        this.fields.forEach(f => design[f.name.toLowerCase()] = f.input.value);
 
         this.designs.push(design);
         this.current =  design;
@@ -200,15 +174,7 @@ class DesignEnergyWeapon
         if(this.validate(evt) || this.current == null)
             return;
 
-        this.current.name = this.name.value;
-        this.current.power = this.power.value;
-        this.current.frequency = this.frequency.value;
-        this.current.bore = this.bore.value;
-        this.current.capictor = this.capacitor.value;
-        this.current.coupling = this.coupling.value;
-        this.current.mass = this.mass.value;
-        this.current.volume = this.volume.value;
-        this.current.cost = this.cost.value;
+        this.fields.forEach(f => this.current[f.name.toLowerCase()] = f.input.value);
 
         this.designList.update(this.current.id, this.current.name);
     }
@@ -228,35 +194,17 @@ class DesignEnergyWeapon
 
     validate(evt)
     {
-        if(this.name.value == "")
-            this.name.classList.add("error");
-        else
-            this.name.classList.remove("error");
-
-        if(this.power.value == "" || this.power.value <= 0)
-            this.power.classList.add("error");
-        else
-            this.power.classList.remove("error");
-
-        if(this.frequency.value == "" || this.frequency.value <= 0)
-            this.frequency.classList.add("error");
-        else
-            this.frequency.classList.remove("error");
-
-        if(this.bore.value == "" || this.bore.value <= 0)
-            this.bore.classList.add("error");
-        else
-            this.bore.classList.remove("error");
-
-        if(this.capacitor.value == "" || this.capacitor.value < this.power.value)
-            this.capacitor.classList.add("error");
-        else
-            this.capacitor.classList.remove("error");
-
-        if(this.coupling.value == "" || this.coupling.value <= 0)
-            this.coupling.classList.add("error");
-        else
-            this.coupling.classList.remove("error");
+        this.fields.forEach(f =>
+        {
+            if(f.input.value === "")
+                f.input.classList.add("error");
+            else if(f.name !== "Name" && f.input.value <= 0)
+                f.input.classList.add("error");
+            else if(f.name === "Capacitor" && f.input.value < this.fields[1].input.value)
+                f.input.classList.add("error");
+            else
+                f.input.classList.remove("error");
+        });
 
         const n = this.root.querySelectorAll(".error");
 
@@ -265,19 +213,20 @@ class DesignEnergyWeapon
 
     update(evt)
     {
-        const rate = this.capacitor.value / this.power.value;
-        const sustained = this.coupling.value / this.power.value;
+        console.log(this);
+        const rate = this.fields[4].input.value / this.fields[1].input.value;
+        const sustained = this.fields[5].input.value / this.fields[1].input.value;
 
         const THZ = 1000000000000; // 10^12
-        const wl = Math.C / (this.frequency.value * THZ);
-        const da = wl / (Math.PI * 2 * this.bore.value);
+        const wl = Math.C / (this.fields[2].input.value * THZ);
+        const da = wl / (Math.PI * 2 * this.fields[3].input.value);
 
         const a = this.range.value / 100;
-        const b = 2 * a * this.bore.value;
-        const c = this.bore.value * this.bore.value * (a - 1);
+        const b = 2 * a * this.fields[3].input.value;
+        const c = (this.fields[3].input.value ** 2) * (a - 1);
         const r = (Math.sqrt(b * b - 4 * a * c) - b) / (2 * a);
         const d = r / Math.sin(da);
-        const e = this.power.value * a;
+        const e = this.fields[1].input.value * a;
 
         document.getElementById("dew.percentage").textContent = this.range.value;
         document.getElementById("dew.range").textContent = (d / 1000).toLocaleString(undefined, K.NF2);
@@ -285,39 +234,27 @@ class DesignEnergyWeapon
         document.getElementById("dew.rate").textContent = (+rate).toLocaleString(undefined, K.NF2);
         document.getElementById("dew.sustained").textContent = (+sustained).toLocaleString(undefined, K.NF2);
 
-        const list = [this.power, this.frequency, this.bore, this.capacitor, this.coupling];
-        const techKey = new Map();
-        techKey.set(this.power, "emitter.power");
-        techKey.set(this.frequency, "emitter.frequency");
-        techKey.set(this.bore, "emitter.bore");
-        techKey.set(this.capacitor, "emitter.capacitor");
-        techKey.set(this.coupling, "emitter.coupling");
-
-        list.forEach(i => 
+        for(let i = 1; i < this.fields.length; i++)
         {
-            let t = techKey.get(i);
+            let input = this.fields[i].input;
+            let tc = this.tech.get("emitter." + this.fields[i].name.toLowerCase());
 
-            if(t !== undefined)
-            {
-                let tc = this.tech.get(t);
-
-                this.massList.get(i).value = tc.mass.getValueAt(i.value).toLocaleString(undefined, K.NF2);
-                this.volumeList.get(i).value = tc.volume.getValueAt(i.value).toLocaleString(undefined, K.NF2);
-                this.costList.get(i).value = tc.cost.getValueAt(i.value).toLocaleString(undefined, K.NF2);
-            }
-        });
+            this.massList.get(input).setValue(tc.mass.getValueAt(input.value));
+            this.volumeList.get(input).setValue(tc.volume.getValueAt(input.value));
+            this.costList.get(input).setValue(tc.cost.getValueAt(input.value));
+        };
 
         let sumMass = 0;
         this.massList.forEach(v => sumMass += +v.value);
-        this.mass.value = sumMass.toLocaleString(undefined, K.NF2);
+        this.mass.setValue(sumMass);
 
         let sumVolume = 0;
         this.volumeList.forEach(v => sumVolume += +v.value);
-        this.volume.value = sumVolume.toLocaleString(undefined, K.NF2);
+        this.volume.setValue(sumVolume);
 
         let sumCost = 0;
         this.costList.forEach(v => sumCost += +v.value);
-        this.cost.value = sumCost.toLocaleString(undefined, K.NF2);
+        this.cost.setValue(sumCost);
     }
 
     toggleObsolete(evt)

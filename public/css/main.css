@@ -27,6 +27,7 @@ input
     color: lightblue;
     padding: 0.5em;
     text-decoration: none;
+    border-right: 2px black solid;
 }
 
 .menu a:hover
@@ -55,7 +56,7 @@ input
 
 .design select
 {
-    width: 15em;
+    width: 17em;
 }
 
 .design option

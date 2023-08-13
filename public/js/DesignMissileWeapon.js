@@ -38,6 +38,7 @@ class DesignMissileWeapon
         this.designList = new List(header);
         this.designList.getList().addEventListener("change", evt => this.selectionChange(evt));
 
+        const D = 13;
         const f = ["Name", "Armour", "Drive", "Fuel", "Warheads", "Decoys", "Power", "Computer", "Scanner", "Jammer", "Comms"];
 
         // create input and display fields
@@ -49,16 +50,16 @@ class DesignMissileWeapon
             n.addEventListener("change", evt => this.validate(evt));
             n.addEventListener("change", evt => this.update(evt));
 
-            this.massList.set(n, new DisplayNumber(11));
-            this.volumeList.set(n, new DisplayNumber(11));
-            this.costList.set(n, new DisplayNumber(11));
+            this.massList.set(n, new DisplayNumber(D));
+            this.volumeList.set(n, new DisplayNumber(D));
+            this.costList.set(n, new DisplayNumber(D));
 
             this.fields.push({name:i, input: n});
         });
 
-        this.mass = new DisplayNumber(11);
-        this.volume = new DisplayNumber(11);
-        this.cost = new DisplayNumber(11);
+        this.mass = new DisplayNumber(D);
+        this.volume = new DisplayNumber(D);
+        this.cost = new DisplayNumber(D);
 
         header.append(UI.createLabel("Name:", this.fields[0].input));
 
@@ -136,8 +137,8 @@ class DesignMissileWeapon
             this.costList.get(input).setValue(whc * tc.cost.getValueAt(input.value));
         };
 
-        let sumMass = 0; // because of the comma in the formatted number
-        this.massList.forEach(v => {sumMass += +v.value; console.log(`v=${v.value}, sumMass=${sumMass}`)});
+        let sumMass = 0; 
+        this.massList.forEach(v => sumMass += +v.value);
         this.mass.setValue(sumMass);
 
         let sumVolume = 0;
@@ -153,7 +154,8 @@ class DesignMissileWeapon
 
         const dr = (a * t ** 2) / 2;
         const vf = a * t;
-        const sr = Math.pow(((1000 * this.fields[SCANNER].input.value) ** 2 * this.range.value) / K.SBW, 0.25);
+        const sbw = 2 * Math.PI * Math.sin(K.degToRad(UK.get("scanner.angle"))) ** 2; 
+        const sr = Math.pow(((1000 * this.fields[SCANNER].input.value) ** 2 * this.range.value) / sbw, 0.25);
 
         document.getElementById("dmw.accel").textContent = (+a).toLocaleString(undefined, K.NF2);
         document.getElementById("dmw.range").textContent = (+dr).toLocaleString(undefined, K.NF2);

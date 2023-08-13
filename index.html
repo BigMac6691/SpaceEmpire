@@ -6,6 +6,7 @@
 		<title>My Space Empire</title>
         <link rel="stylesheet" href="css/main.css">
 		<script src="js/K.js"></script>
+		<script src="js/UK.js"></script>
 		<script src="js/Menu.js"></script>
 		<script src="js/Curve.js"></script>
 		<script src="js/DesignEnergyWeapon.js"></script>
@@ -20,20 +21,26 @@
 			function init()
 			{
 				let menu = new Menu(document.getElementById("menu.main"));
+				menu.addItem("Game Constants", document.getElementById("game.constants"));
 				menu.addItem("Energy", document.getElementById("design.weapons.energy"));
 				menu.addItem("Missile", document.getElementById("design.weapons.missile"));
 
 				Math.C = 299792458; // m/s
 
+				UK.init();
+				UK.makeUI(document.getElementById("game.constants"));
+
 				let tech = new Technology();
 				let dew = new DesignEnergyWeapon(tech, document.getElementById("design.weapons.energy"));
 				let dmw = new DesignMissileWeapon(tech, document.getElementById("design.weapons.missile"));
+				UK.addListener("scanner.angle", dmw);
 			}
 		</script>
 	</head>
 	<body onload="javascript:init();">
 		<h1>My Space Empire</h1>
 		<div id="menu.main" class="menu"></div>
+		<div id="game.constants" class="design"></div>
 		<div id="design.weapons.energy" class="design"></div>
 		<div id="design.weapons.missile" class="design"></div>
 	</body>
