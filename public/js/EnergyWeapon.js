@@ -2,6 +2,8 @@ class EnergyWeapon
 {
     constructor()
     {
+        this.clazz = "EnergyWeapon";
+
         this.id;
         this.name;
         this.power;
@@ -9,6 +11,7 @@ class EnergyWeapon
         this.bore;
         this.capictor;
         this.coupling;
+        
         this.mass;
         this.volume;
         this.cost;
@@ -25,5 +28,15 @@ class EnergyWeapon
     isUsed()
     {
         return this.inUse;
+    }
+
+    toJSON()
+    {
+        return this;
+    }
+
+    fromJSON(json)
+    {
+        Object.assign(this, json);
     }
 }

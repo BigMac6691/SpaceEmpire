@@ -33,4 +33,38 @@ class Technology
     {
         return this.data.get(k);
     }
+
+    listen(evt)
+    {
+        this.data.set(evt.target.id.substring(2), evt.target.value);
+    }
+
+    makeUI(root)
+    {
+        const header = UI.create("div");
+        header.classList.add("header");
+        root.append(UI.createTextNode("h2", "Maintain Technology"));
+
+        for(const [k, v] of this.data)
+        {
+            const n = UI.createInput("text", {id : "t." + k, value : v});
+            n.addEventListener("change", evt => this.listen(evt));
+
+            root.append(UI.createLabel(k + ":", n));
+        }
+    }
+
+    toJSON()
+    {
+        let out = Object.assign({}, this);
+
+        out.data = [...this.data];
+
+        return out;
+    }
+
+    fromJSON(json)
+    {
+        console.log("From JSON called..." + json);
+    }
 }

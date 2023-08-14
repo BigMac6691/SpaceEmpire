@@ -1,9 +1,9 @@
 class DesignEnergyWeapon
 {
-    constructor(techBase, root)
+    constructor(root)
     {
         this.nextId = 1;
-        this.tech = techBase;
+        this.tech = null;
 
         this.root = root;
         this.current = null;
@@ -14,7 +14,6 @@ class DesignEnergyWeapon
         this.costList = new Map();
 
         this.init();
-        this.update();
     }
 
     init()
@@ -115,16 +114,29 @@ class DesignEnergyWeapon
         this.root.append(this.grid, this.footer);
     }  
 
-    load()
+    setPlayer(p)
     {
+        this.tech = p.technology;
 
+        this.setDesigns(p.energyWeaponDesigns);
+
+        this.update(null);
     }
 
-    save()
+    getDesigns()
     {
-
+        return this.designs;
     }
-    
+
+    setDesigns(designs)
+    {
+        this.designList.clear();
+
+        this.designs = designs;
+
+        this.designs.forEach(d => this.designList.add(d));
+    }
+
     selectionChange(evt)
     {
         this.current = this.designs.find(i => i.id === this.designList.getSelected().value);
@@ -144,7 +156,7 @@ class DesignEnergyWeapon
 
     checkForDuplicate(name)
     {
-        return this.designs.some(i => i.name === name);
+        return this.designs.some(d => d.name === name);
     }
 
     createDesign(evt)
@@ -152,7 +164,7 @@ class DesignEnergyWeapon
         if(this.validate(evt))
             return;
 
-        if(this.checkForDuplicate(this.name.value))
+        if(this.checkForDuplicate(this.fields[0].input.value))
         {
             alert("Name already being used.");
             return;
@@ -200,7 +212,7 @@ class DesignEnergyWeapon
                 f.input.classList.add("error");
             else if(f.name !== "Name" && f.input.value <= 0)
                 f.input.classList.add("error");
-            else if(f.name === "Capacitor" && f.input.value < this.fields[1].input.value)
+            else if(f.name === "Capacitor" && +f.input.value < +this.fields[1].input.value)
                 f.input.classList.add("error");
             else
                 f.input.classList.remove("error");
@@ -271,7 +283,7 @@ class DesignEnergyWeapon
     {
         const list = this.designList.getList().querySelectorAll(".used");
 
-        if(this.filterObsolete.checked)
+        if(this.filterInuse.checked)
             list.forEach(i => i.style.display = "none");
         else
             list.forEach(i => i.style.display = "block");
