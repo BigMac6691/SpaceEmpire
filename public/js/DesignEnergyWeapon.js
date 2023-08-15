@@ -2,7 +2,7 @@ class DesignEnergyWeapon
 {
     constructor(root)
     {
-        this.nextId = 1;
+        this.nextId = 1; // This needs to be initialized from a file.
         this.tech = null;
 
         this.root = root;
@@ -134,7 +134,7 @@ class DesignEnergyWeapon
 
         this.designs = designs;
 
-        this.designs.forEach(d => this.designList.add(d));
+        this.designs.forEach(d => this.designList.add({value : d.id, innerHTML : d.name}));
     }
 
     selectionChange(evt)

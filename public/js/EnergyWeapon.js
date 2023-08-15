@@ -2,8 +2,6 @@ class EnergyWeapon
 {
     constructor()
     {
-        this.clazz = "EnergyWeapon";
-
         this.id;
         this.name;
         this.power;
@@ -38,5 +36,7 @@ class EnergyWeapon
     fromJSON(json)
     {
         Object.assign(this, json);
+
+        return this;
     }
 }

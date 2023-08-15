@@ -26,6 +26,8 @@
 			
 			function init()
 			{
+				GAME.load();
+
 				let menu = new Menu(document.getElementById("menu.main"));
 				menu.addItem("Game Constants", document.getElementById("game.constants"));
 				menu.addItem("Technology", document.getElementById("technology"));
@@ -35,25 +37,34 @@
 				UK.init();
 				UK.makeUI(document.getElementById("game.constants"));
 
-				let player = new Player();
-				player.load();
-
-				GAME.players.push(player);
-
 				let tech = new Technology();
+				tech.init();
 				tech.makeUI(document.getElementById("technology"));
 
 				let dew = new DesignEnergyWeapon(document.getElementById("design.weapons.energy"));
 				let dmw = new DesignMissileWeapon(tech, document.getElementById("design.weapons.missile"));
 				UK.addListener("scanner.angle", dmw);
 
-				dew.setPlayer(player);
+				dew.setPlayer(GAME.players[0]);
+			}
+
+			function loadGame()
+			{
+				console.log("Load Game pressed...");
+				GAME.load();
 			}
 
 			function saveGame()
 			{
 				console.log("Save Game pressed...");
 				GAME.save();
+			}
+
+			function deleteGame()
+			{
+				console.log("Delete Game pressed...");
+
+				localStorage.removeItem("spaceempire.players");
 			}
 		</script>
 	</head>
@@ -67,5 +78,6 @@
 		<div id="design.weapons.missile" class="design"></div>
 		<hr/>
 		<button type="button" onclick="saveGame()">Save Game</button>
+		<button type="button" onclick="deleteGame()">Delete Game</button>
 	</body>
 </html>
