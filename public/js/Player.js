@@ -18,8 +18,6 @@ class Player
     {
         Object.assign(this, json);
 
-        console.log("Inside Player.fromJSON() EWD count = " + this.energyWeaponDesigns.length);
-
         this.technology = new Technology().fromJSON(json.technology);
 
         let temp = [];

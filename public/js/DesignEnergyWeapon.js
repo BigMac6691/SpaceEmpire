@@ -2,7 +2,6 @@ class DesignEnergyWeapon
 {
     constructor(root)
     {
-        this.nextId = 1; // This needs to be initialized from a file.
         this.tech = null;
 
         this.root = root;
@@ -171,7 +170,7 @@ class DesignEnergyWeapon
         }
 
         let design = new EnergyWeapon();
-        design.id = "EWD." + this.nextId++;
+        design.id = "EWD." + IDGen.nextId("energy.weapon.design");
 
         this.fields.forEach(f => design[f.name.toLowerCase()] = f.input.value);
 
@@ -225,7 +224,6 @@ class DesignEnergyWeapon
 
     update(evt)
     {
-        console.log(this);
         const rate = this.fields[4].input.value / this.fields[1].input.value;
         const sustained = this.fields[5].input.value / this.fields[1].input.value;
 
