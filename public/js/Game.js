@@ -70,7 +70,6 @@ class Game
 
         json.forEach(p => this.players.push(new Player().fromJSON(p)));
 
-        console.log(json);
         console.log(this);
     }
 }

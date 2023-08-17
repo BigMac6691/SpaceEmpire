@@ -58,7 +58,3 @@ hit probability = Ps / (Ps + Pj) at the range the weapon was fired.
 
 
 Need to settle on units and scale for all numbers to be somewhat consistent.
-
-The id for the energy weapons panel resets to 1 when game is restarted.
-      Save state of various incremental variables
-      Reference them from the code that needs it via a static class

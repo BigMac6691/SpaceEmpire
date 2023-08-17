@@ -35,7 +35,7 @@ class Technology
         this.data.set(evt.target.id.substring(2), evt.target.value);
     }
 
-    makeUI(root)
+    makeUI(root) // ugly move this somewhere else...
     {
         const header = UI.create("div");
         header.classList.add("header");

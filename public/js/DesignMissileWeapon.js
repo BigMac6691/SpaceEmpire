@@ -1,119 +1,30 @@
-class DesignMissileWeapon
+class DesignMissileWeapon extends DesignUI
 {
     constructor(techBase, root)
     {
-        this.nextId = 1;
+        super(root);
+
         this.tech = techBase;
 
-        this.root = root;
         this.current = null;
         this.designs = [];
-        this.fields = [];
-        this.massList = new Map();
-        this.volumeList = new Map();
-        this.costList = new Map();
-
+        
         this.init();
         this.update();
     }
 
     init()
     {
-        const header = UI.create("div");
-        header.classList.add("header");
-        this.root.append(UI.createTextNode("h2", "Design Missile Weapons"));
-
-        const filters = document.createElement("div");
-        
-        this.filterObsolete = UI.createInput("checkbox");
-        this.filterObsolete.addEventListener("change", evt => this.toggleObsolete(evt));
-        this.filterInuse = UI.createInput("checkbox");
-        this.filterInuse.addEventListener("change", evt => this.toggleInuse(evt));
-
-        filters.append(UI.createLabel("Hide obsolete ", this.filterObsolete),
-                       UI.createLabel(" Hide in use ", this.filterInuse));
-
-        header.append(filters);
-
-        this.designList = new List(header);
-        this.designList.getList().addEventListener("change", evt => this.selectionChange(evt));
-
-        const D = 13;
         const f = ["Name", "Armour", "Drive", "Fuel", "Warheads", "Decoys", "Power", "Computer", "Scanner", "Jammer", "Comms"];
 
-        // create input and display fields
-        f.forEach(i =>
-        {
-            const n = i === "Name" ? UI.createInput("text")
-                                   : UI.createInput("number", {value : 1});
-            
-            n.addEventListener("change", evt => this.validate(evt));
-            n.addEventListener("change", evt => this.update(evt));
-
-            this.massList.set(n, new DisplayNumber(D));
-            this.volumeList.set(n, new DisplayNumber(D));
-            this.costList.set(n, new DisplayNumber(D));
-
-            this.fields.push({name:i, input: n});
-        });
-
-        this.mass = new DisplayNumber(D);
-        this.volume = new DisplayNumber(D);
-        this.cost = new DisplayNumber(D);
-
-        header.append(UI.createLabel("Name:", this.fields[0].input));
-
-        this.root.append(header);
-
-        this.grid = document.createElement("div");
-        this.grid.classList.add("designGrid");
-
-        this.grid.append(UI.createTextNode("span", " "),
-                         UI.createTextNode("span", "Mass (kg)"),
-                         UI.createTextNode("span", "Volume (m^3)"),
-                         UI.createTextNode("span", "Cost ($)"),
-                         UI.createTextNode("span", " "));
-        
-        // add input and display fields to screen
-        for(let i = 1; i < this.fields.length; i++)
-        {
-            this.grid.append(UI.createLabel(this.fields[i].name + ":", this.fields[i].input),
-                this.massList.get(this.fields[i].input).getNode(),
-                this.volumeList.get(this.fields[i].input).getNode(),
-                this.costList.get(this.fields[i].input).getNode(), 
-                UI.createTextNode("span", I18N.getText("design.weapon.missile." + this.fields[i].name.toLowerCase())));
-        }
-
-        this.grid.append(UI.createTextNode("span", "Total:"), 
-                         this.mass.getNode(), 
-                         this.volume.getNode(),
-                         this.cost.getNode(),
-                         UI.createTextNode("span", " "));
+        super.init("Design Missile Weapons", f, "design.weapon.missile.");
 
         this.range = UI.createInput("range", {min : 1, max : 10000, value : 5000});
         this.range.addEventListener("input", evt => this.update(evt));
 
-        this.summary = document.createElement("p");
         this.summary.innerHTML = "<p>This missile can accelerate at <span id='dmw.accel'></span> for <span id='dmw.t'></span> seconds reaching a terminal velocity of <span id='dmw.vf'></span> after travelling <span id='dmw.range'></span>.  At that point it can no longer maneuver and has no chance to hit.</p><p>Maximum range object with RCS of <span id='dmw.rcs'></span>m<sup>2</sup> can be detected is <span id='dmw.scan'></span>km.</p>";
 
-        this.createButton = UI.createTextNode("button", "Create");
-        this.createButton.addEventListener("click", evt => this.createDesign(evt));
-
-        this.updateButton = UI.createTextNode("button", "Update");
-        this.updateButton.addEventListener("click", evt => this.updateDesign(evt));
-
-        this.deleteButton = UI.createTextNode("button", "Delete");
-        this.deleteButton.addEventListener("click", evt => this.deleteDesign(evt));
-
-        this.footer = document.createElement("div");
-        this.footer.classList.add("designFooter");
-        this.footer.append(UI.createLabel("Effective RCS:", this.range),
-                        this.summary,
-                        this.createButton,
-                        this.updateButton,
-                        this.deleteButton);
-
-        this.root.append(this.grid, this.footer);
+        this.footer.insertBefore(UI.createLabel("Effective RCS:", this.range), this.summary);
     }
 
     validate()
@@ -137,17 +48,7 @@ class DesignMissileWeapon
             this.costList.get(input).setValue(whc * tc.cost.getValueAt(input.value));
         };
 
-        let sumMass = 0; 
-        this.massList.forEach(v => sumMass += +v.value);
-        this.mass.setValue(sumMass);
-
-        let sumVolume = 0;
-        this.volumeList.forEach(v => sumVolume += +v.value);
-        this.volume.setValue(sumVolume);
-
-        let sumCost = 0;
-        this.costList.forEach(v => sumCost += +v.value);
-        this.cost.setValue(sumCost);
+        this.updateMVC();
 
         const a = 1000 * this.fields[DRIVE].input.value / sumMass;
         const t = this.fields[FUEL].input.value / this.fields[DRIVE].input.value;
