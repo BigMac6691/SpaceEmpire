@@ -42,23 +42,19 @@ class DesignMissileWeapon extends DesignUI
     {
         console.log("Design Missile Weapon validate() called...");
 
-        // this.fields.forEach(f =>
-        // {
-        //     if(f.input.value === "")
-        //         f.input.classList.add("error");
-        //     else if(f.name !== "Name" && f.input.value <= 0)
-        //         f.input.classList.add("error");
-        //     else if(f.name === "Capacitor" && +f.input.value < +this.fields[1].input.value)
-        //         f.input.classList.add("error");
-        //     else
-        //         f.input.classList.remove("error");
-        // });
+        this.fields.forEach(f =>
+        {
+            if(f.input.value === "")
+                f.input.classList.add("error");
+            else if(f.name !== "Name" && f.input.value <= 0)
+                f.input.classList.add("error");
+            else
+                f.input.classList.remove("error");
+        });
     
-        // const n = this.root.querySelectorAll(".error");
+        const n = this.root.querySelectorAll(".error");
     
-        // return n.length > 0;
-
-        return false;
+        return n.length > 0;
     }
 
     update()

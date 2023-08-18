@@ -190,6 +190,15 @@ class DesignUI
             return;
         }
 
+        if(this.current.name != this.fields[0].input.value)
+        {
+            if(this.checkForDuplicate(this.fields[0].input.value))
+            {
+                alert("Name already being used.");
+                return;
+            }    
+        }
+
         this.fields.forEach(f => this.current[f.name.toLowerCase()] = f.input.value);
 
         this.designList.update(this.current.id, this.current.name);

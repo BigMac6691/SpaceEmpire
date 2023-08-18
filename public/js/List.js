@@ -22,7 +22,7 @@ class List
     update(value, text)
     {
         for(let i = 0; i < this.list.options.length; i++)
-            if(this.list.options[i].value = value)
+            if(this.list.options[i].value == value)
             {
                 this.list.options[i].innerHTML = text;
 
