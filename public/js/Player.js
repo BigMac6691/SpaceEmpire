@@ -23,7 +23,10 @@ class Player
         let temp = [];
         json.energyWeaponDesigns.forEach(d => temp.push(new EnergyWeapon().fromJSON(d)));
         this.energyWeaponDesigns = temp;
-        // json.missileWeaponDesigns.forEach(d => this.missileWeaponDesigns.push(new EnergyWeapon().fromJSON(d)));
+
+        temp = [];
+        json.missileWeaponDesigns.forEach(d => temp.push(new MissileWeapon().fromJSON(d)));
+        this.missileWeaponDesigns = temp;
 
         return this;
     }

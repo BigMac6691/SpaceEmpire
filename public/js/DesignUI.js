@@ -4,7 +4,11 @@ class DesignUI
     {
         this.root = root;
 
+        this.current = null;
+        this.tech = null;
+
         this.fields = [];
+        this.designs = [];
 
         this.massList = new Map();
         this.volumeList = new Map();
@@ -107,17 +111,101 @@ class DesignUI
     // MVC means Mass Volume Cost
     updateMVC()
     {
-        let sumMass = 0; 
-        this.massList.forEach(v => sumMass += +v.value);
-        this.mass.setValue(sumMass);
+        this.sumMass = 0; 
+        this.massList.forEach(v => this.sumMass += +v.value);
+        this.mass.setValue(this.sumMass);
 
-        let sumVolume = 0;
-        this.volumeList.forEach(v => sumVolume += +v.value);
-        this.volume.setValue(sumVolume);
+        this.sumVolume = 0;
+        this.volumeList.forEach(v => this.sumVolume += +v.value);
+        this.volume.setValue(this.sumVolume);
 
-        let sumCost = 0;
-        this.costList.forEach(v => sumCost += +v.value);
-        this.cost.setValue(sumCost);
+        this.sumCost = 0;
+        this.costList.forEach(v => this.sumCost += +v.value);
+        this.cost.setValue(this.sumCost);
+    }
+
+    getDesigns()
+    {
+        return this.designs;
+    }
+
+    setDesigns(designs)
+    {
+        this.designList.clear();
+
+        this.designs = designs;
+
+        this.designs.forEach(d => this.designList.add({value : d.id, innerHTML : d.name}));
+    }
+
+    selectionChange(evt)
+    {
+        this.current = this.designs.find(i => i.id === this.designList.getSelected().value);
+
+        if(this.current == null)
+            return;
+
+        this.display(this.current);
+    }
+
+    display(design)
+    {
+        this.fields.forEach(f => f.input.value = design[f.name.toLowerCase()]);
+
+        this.update(null);
+    }
+
+    checkForDuplicate(name)
+    {
+        return this.designs.some(d => d.name === name);
+    }
+
+    createDesign(evt)
+    {
+        if(this.validate(evt))
+            return;
+
+        if(this.checkForDuplicate(this.fields[0].input.value))
+        {
+            alert("Name already being used.");
+            return;
+        }
+
+        let design = this.makeDesignInstance();
+
+        this.fields.forEach(f => design[f.name.toLowerCase()] = f.input.value);
+
+        this.designs.push(design);
+        this.current =  design;
+
+        this.designList.add({value : design.id, innerHTML : design.name});
+    }
+
+    updateDesign(evt)
+    {
+        if(this.validate(evt) || this.current == null)
+        {
+            alert("Error cannot update.")
+
+            return;
+        }
+
+        this.fields.forEach(f => this.current[f.name.toLowerCase()] = f.input.value);
+
+        this.designList.update(this.current.id, this.current.name);
+    }
+
+    deleteDesign(evt)
+    {
+        if(this.current == null)
+            return;
+
+        this.current.isObsolete = true;
+
+        const option = this.designList.getSelected();
+        
+        if(option != null)
+            option.classList.add("obsolete");
     }
 
     toggleObsolete(evt)

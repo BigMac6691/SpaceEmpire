@@ -2,12 +2,7 @@ class DesignEnergyWeapon extends DesignUI
 {
     constructor(root)
     {
-        super(root);
-
-        this.tech = null;
-
-        this.current = null;
-        this.designs = [];
+        super(root);        
 
         this.init();
     }
@@ -35,85 +30,12 @@ class DesignEnergyWeapon extends DesignUI
         this.update(null);
     }
 
-    getDesigns()
+    makeDesignInstance()
     {
-        return this.designs;
-    }
-
-    setDesigns(designs)
-    {
-        this.designList.clear();
-
-        this.designs = designs;
-
-        this.designs.forEach(d => this.designList.add({value : d.id, innerHTML : d.name}));
-    }
-
-    selectionChange(evt)
-    {
-        this.current = this.designs.find(i => i.id === this.designList.getSelected().value);
-
-        if(this.current == null)
-            return;
-
-        this.display(this.current);
-    }
-
-    display(design)
-    {
-        this.fields.forEach(f => f.input.value = design[f.name.toLowerCase()]);
-
-        this.update(null);
-    }
-
-    checkForDuplicate(name)
-    {
-        return this.designs.some(d => d.name === name);
-    }
-
-    createDesign(evt)
-    {
-        if(this.validate(evt))
-            return;
-
-        if(this.checkForDuplicate(this.fields[0].input.value))
-        {
-            alert("Name already being used.");
-            return;
-        }
-
         let design = new EnergyWeapon();
         design.id = "EWD." + IDGen.nextId("energy.weapon.design");
 
-        this.fields.forEach(f => design[f.name.toLowerCase()] = f.input.value);
-
-        this.designs.push(design);
-        this.current =  design;
-
-        this.designList.add({value : design.id, innerHTML : design.name});
-    }
-
-    updateDesign(evt)
-    {
-        if(this.validate(evt) || this.current == null)
-            return;
-
-        this.fields.forEach(f => this.current[f.name.toLowerCase()] = f.input.value);
-
-        this.designList.update(this.current.id, this.current.name);
-    }
-
-    deleteDesign(evt)
-    {
-        if(this.current == null)
-            return;
-
-        this.current.isObsolete = true;
-
-        const option = this.designList.getSelected();
-        
-        if(option != null)
-            option.classList.add("obsolete");
+        return design;
     }
 
     validate(evt)
@@ -137,6 +59,18 @@ class DesignEnergyWeapon extends DesignUI
 
     update(evt)
     {
+        for(let i = 1; i < this.fields.length; i++)
+        {
+            let input = this.fields[i].input;
+            let tc = this.tech.get("emitter." + this.fields[i].name.toLowerCase());
+
+            this.massList.get(input).setValue(tc.mass.getValueAt(input.value));
+            this.volumeList.get(input).setValue(tc.volume.getValueAt(input.value));
+            this.costList.get(input).setValue(tc.cost.getValueAt(input.value));
+        };
+
+        this.updateMVC();
+
         const rate = this.fields[4].input.value / this.fields[1].input.value;
         const sustained = this.fields[5].input.value / this.fields[1].input.value;
 
@@ -156,17 +90,5 @@ class DesignEnergyWeapon extends DesignUI
         document.getElementById("dew.effective").textContent = (+e).toLocaleString(undefined, K.NF2);
         document.getElementById("dew.rate").textContent = (+rate).toLocaleString(undefined, K.NF2);
         document.getElementById("dew.sustained").textContent = (+sustained).toLocaleString(undefined, K.NF2);
-
-        for(let i = 1; i < this.fields.length; i++)
-        {
-            let input = this.fields[i].input;
-            let tc = this.tech.get("emitter." + this.fields[i].name.toLowerCase());
-
-            this.massList.get(input).setValue(tc.mass.getValueAt(input.value));
-            this.volumeList.get(input).setValue(tc.volume.getValueAt(input.value));
-            this.costList.get(input).setValue(tc.cost.getValueAt(input.value));
-        };
-
-        this.updateMVC();
     }
 }

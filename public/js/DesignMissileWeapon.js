@@ -1,16 +1,10 @@
 class DesignMissileWeapon extends DesignUI
 {
-    constructor(techBase, root)
+    constructor(root)
     {
         super(root);
-
-        this.tech = techBase;
-
-        this.current = null;
-        this.designs = [];
-        
+      
         this.init();
-        this.update();
     }
 
     init()
@@ -27,9 +21,44 @@ class DesignMissileWeapon extends DesignUI
         this.footer.insertBefore(UI.createLabel("Effective RCS:", this.range), this.summary);
     }
 
+    setPlayer(p)
+    {
+        this.tech = p.technology;
+
+        this.setDesigns(p.missileWeaponDesigns);
+
+        this.update(null);
+    }
+
+    makeDesignInstance()
+    {
+        let design = new MissileWeapon();
+        design.id = "MWD." + IDGen.nextId("missile.weapon.design");
+
+        return design;
+    }
+
     validate()
     {
         console.log("Design Missile Weapon validate() called...");
+
+        // this.fields.forEach(f =>
+        // {
+        //     if(f.input.value === "")
+        //         f.input.classList.add("error");
+        //     else if(f.name !== "Name" && f.input.value <= 0)
+        //         f.input.classList.add("error");
+        //     else if(f.name === "Capacitor" && +f.input.value < +this.fields[1].input.value)
+        //         f.input.classList.add("error");
+        //     else
+        //         f.input.classList.remove("error");
+        // });
+    
+        // const n = this.root.querySelectorAll(".error");
+    
+        // return n.length > 0;
+
+        return false;
     }
 
     update()
@@ -50,7 +79,7 @@ class DesignMissileWeapon extends DesignUI
 
         this.updateMVC();
 
-        const a = 1000 * this.fields[DRIVE].input.value / sumMass;
+        const a = 1000 * this.fields[DRIVE].input.value / this.sumMass;
         const t = this.fields[FUEL].input.value / this.fields[DRIVE].input.value;
 
         const dr = (a * t ** 2) / 2;

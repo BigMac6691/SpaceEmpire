@@ -15,7 +15,9 @@
 		<script src="js/DesignUI.js"></script>
 		<script src="js/DesignEnergyWeapon.js"></script>
 		<script src="js/DesignMissileWeapon.js"></script>
+		<script src="js/Weapon.js"></script>
 		<script src="js/EnergyWeapon.js"></script>
+		<script src="js/MissileWeapon.js"></script>
 		<script src="js/UI.js"></script>
 		<script src="js/Technology.js"></script>
 		<script src="js/I18N.js"></script>
@@ -44,10 +46,11 @@
 				tech.makeUI(document.getElementById("technology"));
 
 				let dew = new DesignEnergyWeapon(document.getElementById("design.weapons.energy"));
-				let dmw = new DesignMissileWeapon(tech, document.getElementById("design.weapons.missile"));
+				let dmw = new DesignMissileWeapon(document.getElementById("design.weapons.missile"));
 				UK.addListener("scanner.angle", dmw);
 
 				dew.setPlayer(GAME.players[0]);
+				dmw.setPlayer(GAME.players[0]);
 			}
 
 			function loadGame()
