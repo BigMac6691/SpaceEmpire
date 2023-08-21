@@ -1,15 +1,15 @@
 class List
 {
-    constructor(root)
+    constructor(root, rows)
     {
         this.root = root;
 
-        this.init()
+        this.init(rows ?? 5);
     }
 
-    init()
+    init(rows)
     {
-        this.list = UI.create("select", {size : 5});
+        this.list = UI.create("select", {size : rows});
 
         this.root.append(this.list);
     }

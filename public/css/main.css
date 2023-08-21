@@ -78,9 +78,28 @@ input
 {
     display: flex;
     flex-direction: column;
+    justify-items: center;
     align-items: center;
     row-gap: 0.5em;
     margin-bottom: 1em;
+}
+
+.design .shipheader
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1em;
+    row-gap: 0.5em;
+}
+
+.design .shipheader :nth-child(odd)
+{
+    justify-self: right;
+}
+
+.design .shipheader :nth-child(even)
+{
+    justify-self: left;
 }
 
 .designFooter

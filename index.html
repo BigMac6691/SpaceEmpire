@@ -15,6 +15,7 @@
 		<script src="js/DesignUI.js"></script>
 		<script src="js/DesignEnergyWeapon.js"></script>
 		<script src="js/DesignMissileWeapon.js"></script>
+		<script src="js/DesignShip.js"></script>
 		<script src="js/Weapon.js"></script>
 		<script src="js/EnergyWeapon.js"></script>
 		<script src="js/MissileWeapon.js"></script>
@@ -37,6 +38,7 @@
 				menu.addItem("Technology", document.getElementById("technology"));
 				menu.addItem("Energy", document.getElementById("design.weapons.energy"));
 				menu.addItem("Missile", document.getElementById("design.weapons.missile"));
+				menu.addItem("Ship", document.getElementById("design.ship"));
 
 				UK.init();
 				UK.makeUI(document.getElementById("game.constants"));
@@ -49,8 +51,11 @@
 				let dmw = new DesignMissileWeapon(document.getElementById("design.weapons.missile"));
 				UK.addListener("scanner.angle", dmw);
 
+				let ds = new DesignShip(document.getElementById("design.ship"));
+
 				dew.setPlayer(GAME.players[0]);
 				dmw.setPlayer(GAME.players[0]);
+				ds.setPlayer(GAME.players[0]);
 			}
 
 			function loadGame()
@@ -82,6 +87,7 @@
 		<div id="technology" class="design"></div>
 		<div id="design.weapons.energy" class="design"></div>
 		<div id="design.weapons.missile" class="design"></div>
+		<div id="design.ship" class="design"></div>
 		<hr/>
 		<button type="button" onclick="saveGame()">Save Game</button>
 		<button type="button" onclick="deleteGame()">Delete Game</button>

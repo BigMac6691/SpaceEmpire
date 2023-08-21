@@ -17,57 +17,15 @@ class DesignUI
 
     init(title, labels, idRoot)
     {
-        const header = UI.create("div");
-        header.classList.add("header");
-        this.root.append(UI.createTextNode("h2", title));
-
-        const filters = document.createElement("div");
-        
-        this.filterObsolete = UI.createInput("checkbox");
-        this.filterObsolete.addEventListener("change", evt => this.toggleObsolete(evt));
-        this.filterInuse = UI.createInput("checkbox");
-        this.filterInuse.addEventListener("change", evt => this.toggleInuse(evt));
-
-        filters.append(UI.createLabel("Hide obsolete ", this.filterObsolete),
-                       UI.createLabel(" Hide in use ", this.filterInuse));
-
-        header.append(filters);
-
-        this.designList = new List(header);
-        this.designList.getList().addEventListener("change", evt => this.selectionChange(evt));
-
-        const D = 13;
-
-        // create input and display fields
-        labels.forEach(i =>
-        {
-            const n = i === "Name" ? UI.createInput("text")
-                                   : UI.createInput("number", {value : 1});
-            
-            n.addEventListener("change", evt => this.validate(evt));
-            n.addEventListener("change", evt => this.update(evt));
-
-            this.massList.set(n, new DisplayNumber(D));
-            this.volumeList.set(n, new DisplayNumber(D));
-            this.costList.set(n, new DisplayNumber(D));
-
-            this.fields.push({name:i, input: n});
-        });
-
-        this.mass = new DisplayNumber(D);
-        this.volume = new DisplayNumber(D);
-        this.cost = new DisplayNumber(D);
-
-        header.append(UI.createLabel("Name:", this.fields[0].input));
-
-        this.root.append(header);
+        this.initFields(labels);
+        this.initHeader(title);
 
         this.grid = document.createElement("div");
         this.grid.classList.add("designGrid");
 
         this.grid.append(UI.createTextNode("span", " "),
                          UI.createTextNode("span", "Mass (kg)"),
-                         UI.createTextNode("span", "Volume (m^3)"),
+                         UI.create("div", {innerHTML : "Volume (m<sup>3</sup>)"}),
                          UI.createTextNode("span", "Cost ($)"),
                          UI.createTextNode("span", " "));
         
@@ -106,6 +64,61 @@ class DesignUI
                         this.deleteButton);
 
         this.root.append(this.grid, this.footer);
+    }
+
+    initHeader(title)
+    {
+        this.root.append(UI.createTextNode("h2", title));
+
+        const header = UI.create("div", {}, ["header"]);
+        const filters = document.createElement("div");
+        
+        this.filterObsolete = UI.createInput("checkbox");
+        this.filterObsolete.addEventListener("change", evt => this.toggleObsolete(evt));
+        this.filterInuse = UI.createInput("checkbox");
+        this.filterInuse.addEventListener("change", evt => this.toggleInuse(evt));
+
+        filters.append(UI.createLabel("Hide obsolete ", this.filterObsolete),
+                       UI.createLabel(" Hide in use ", this.filterInuse));
+
+        header.append(filters);
+
+        this.initLists(header);
+
+        header.append(UI.createLabel("Name:", this.fields[0].input));
+
+        this.root.append(header);
+    }
+
+    initLists(header)
+    {
+        this.designList = new List(header);
+        this.designList.getList().addEventListener("change", evt => this.selectionChange(evt));
+    }
+
+    initFields(labels)
+    {
+        const D = 13;
+
+        // create input and display fields
+        labels.forEach(i =>
+        {
+            const n = i === "Name" ? UI.createInput("text")
+                                   : UI.createInput("number", {value : 1});
+            
+            n.addEventListener("change", evt => this.validate(evt));
+            n.addEventListener("change", evt => this.update(evt));
+
+            this.massList.set(n, new DisplayNumber(D));
+            this.volumeList.set(n, new DisplayNumber(D));
+            this.costList.set(n, new DisplayNumber(D));
+
+            this.fields.push({name:i, input: n});
+        });
+
+        this.mass = new DisplayNumber(D);
+        this.volume = new DisplayNumber(D);
+        this.cost = new DisplayNumber(D);
     }
 
     // MVC means Mass Volume Cost
