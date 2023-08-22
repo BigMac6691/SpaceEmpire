@@ -23,11 +23,11 @@ class DesignUI
         this.grid = document.createElement("div");
         this.grid.classList.add("designGrid");
 
-        this.grid.append(UI.createTextNode("span", " "),
-                         UI.createTextNode("span", "Mass (kg)"),
+        this.grid.append(UI.create("div", {innerHTML : " "}),
+                         UI.create("div", {innerHTML : "Mass (kg)"}),
                          UI.create("div", {innerHTML : "Volume (m<sup>3</sup>)"}),
-                         UI.createTextNode("span", "Cost ($)"),
-                         UI.createTextNode("span", " "));
+                         UI.create("div", {innerHTML : "Cost ($)"}),
+                         UI.create("div", {innerHTML : " "}));
         
         // add input and display fields to screen
         for(let i = 1; i < this.fields.length; i++)
@@ -92,7 +92,7 @@ class DesignUI
 
     initLists(header)
     {
-        this.designList = new List(header);
+        this.designList = new List(5).setRoot(header);
         this.designList.getList().addEventListener("change", evt => this.selectionChange(evt));
     }
 

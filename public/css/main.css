@@ -90,6 +90,7 @@ input
     grid-template-columns: 1fr 1fr;
     column-gap: 1em;
     row-gap: 0.5em;
+    margin-bottom: 1em;
 }
 
 .design .shipheader :nth-child(odd)

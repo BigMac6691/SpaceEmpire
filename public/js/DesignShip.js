@@ -33,19 +33,21 @@ class DesignShip extends DesignUI
 
         header.append(filters);
 
-        this.weaponTypes = new List(header, 1);
+        this.weaponTypes = new List().setRoot(header);
         this.weaponTypes.add({value : "ewd", innerHTML : "Energy Weapon Designs"});
         this.weaponTypes.add({value : "mwd", innerHTML : "Missile Weapon Designs"});
         this.weaponTypes.getList().addEventListener("change", evt => this.weaponChange(evt));
 
-        this.designList = new List(header);
+        this.designList = new List(5).setRoot(header);
         this.designList.getList().addEventListener("change", evt => this.selectionChange(evt));
 
-        this.weaponDesigns = new List(header);
+        this.weaponDesigns = new List(5).setRoot(header);
 
         header.append(UI.createLabel("Name:", this.fields[0].input));
 
-        header.append(UI.create("button", {textContent : "Add"}));
+        this.addWeaponButton = UI.create("button", {textContent : "Add"});
+        this.addWeaponButton.addEventListener("click", evt => this.addWeapon(evt));
+        header.append(this.addWeaponButton);
 
         this.root.append(header);
     }
@@ -66,6 +68,11 @@ class DesignShip extends DesignUI
             this.setWeaponDesigns(this.player.energyWeaponDesigns);
         else
             this.setWeaponDesigns(this.player.missileWeaponDesigns);
+    }
+
+    addWeapon(evt)
+    {
+        console.log("Add Weapon button pressed...");
     }
 
     setWeaponDesigns(designs)
