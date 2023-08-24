@@ -58,3 +58,28 @@ hit probability = Ps / (Ps + Pj) at the range the weapon was fired.
 
 
 Need to settle on units and scale for all numbers to be somewhat consistent.
+
+Notes on using tree view on ship design
+      have all parts selected from drop down then added
+      not just energy and missile but
+            drives
+                  FTL (one kind or hyperspace/warp/wormhole variants?)
+                  chemical
+                  ion
+                  fission
+                  fusion
+                  antimatter
+            electronic warfare
+                  scanner
+                  jammer
+                  computer
+                  communication
+                  stealth?
+            materials? or defenses?
+                  different kinds of armour? (general ship armour - not for parts)
+                  stealth as in a material?
+                  shields?
+            miscellaneous
+                  cargo (on a warship store missiles and fuel mostly)
+                  crew (quarters and/or life support)
+                        the idea here is a fighter has life support but not quarters while quarters could be assumed to have both

@@ -36,6 +36,11 @@ class DesignShip extends DesignUI
         this.weaponTypes = new List().setRoot(header);
         this.weaponTypes.add({value : "ewd", innerHTML : "Energy Weapon Designs"});
         this.weaponTypes.add({value : "mwd", innerHTML : "Missile Weapon Designs"});
+        this.weaponTypes.add({value : "drives", innerHTML : "Drives"});
+        this.weaponTypes.add({value : "ew", innerHTML : "Electronic Warfare"});
+        this.weaponTypes.add({value : "defense", innerHTML : "Defenses"});
+        this.weaponTypes.add({value : "misc", innerHTML : "Miscellaneous"});
+
         this.weaponTypes.getList().addEventListener("change", evt => this.weaponChange(evt));
 
         this.designList = new List(5).setRoot(header);
@@ -66,8 +71,10 @@ class DesignShip extends DesignUI
     {
         if(this.weaponTypes.getSelected().value == "ewd")
             this.setWeaponDesigns(this.player.energyWeaponDesigns);
-        else
+        else if(this.weaponTypes.getSelected().value == "mwd")
             this.setWeaponDesigns(this.player.missileWeaponDesigns);
+        else
+            this.setWeaponDesigns([]);
     }
 
     addWeapon(evt)
