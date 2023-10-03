@@ -25,29 +25,14 @@ class Technology
         this.data.set("missile.comms", {mass : new Curve([[0,0],[100,2],[500,5],[1000,20]]), cost : new Curve([[0,1],[100,20],[500,50],[1000,200]]), volume : new Curve([[0,1],[100,5]])});
     }
 
+    set(k, v)
+    {
+        this.data.set(k, v);
+    }
+
     get(k)
     {
         return this.data.get(k);
-    }
-
-    listen(evt)
-    {
-        this.data.set(evt.target.id.substring(2), evt.target.value);
-    }
-
-    makeUI(root) // ugly move this somewhere else...
-    {
-        const header = UI.create("div");
-        header.classList.add("header");
-        root.append(UI.createTextNode("h2", "Maintain Technology"));
-
-        for(const [k, v] of this.data)
-        {
-            const n = UI.createInput("text", {id : "t." + k, value : v});
-            n.addEventListener("change", evt => this.listen(evt));
-
-            root.append(UI.createLabel(k + ":", n));
-        }
     }
 
     toJSON()

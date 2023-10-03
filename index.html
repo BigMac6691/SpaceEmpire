@@ -24,6 +24,9 @@
 		<script src="js/I18N.js"></script>
 		<script src="js/List.js"></script>
 		<script src="js/DisplayNumber.js"></script>
+		<script src="js/Research.js"></script>
+		<script src="js/Data.js"></script>
+		<script src="js/SVG.js"></script>
 		<script>
 			Math.C = 299792458; // m/s
 
@@ -31,11 +34,13 @@
 			
 			function init()
 			{
+				TEXT.forEach(t => I18N.text.set(t.id, t.text));
+				
 				GAME.load();
 
 				let menu = new Menu(document.getElementById("menu.main"));
 				menu.addItem("Game Constants", document.getElementById("game.constants"));
-				menu.addItem("Technology", document.getElementById("technology"));
+				menu.addItem("Research", document.getElementById("research"));
 				menu.addItem("Energy", document.getElementById("design.weapons.energy"));
 				menu.addItem("Missile", document.getElementById("design.weapons.missile"));
 				menu.addItem("Ship", document.getElementById("design.ship"));
@@ -44,15 +49,28 @@
 				UK.makeUI(document.getElementById("game.constants"));
 
 				let tech = new Technology();
-				tech.init();
-				tech.makeUI(document.getElementById("technology"));
+				//tech.init();
+				TECH.forEach(t => 
+				{
+					t.data.forEach(d =>
+					{
+						if(d.type === "curve")
+							d.fn = new Curve(d.data);
+					});
 
+					tech.set(t.id, t);
+				});
+				
+				GAME.players[0].tech = tech;
+
+				let research = new Research(document.getElementById("research"));
 				let dew = new DesignEnergyWeapon(document.getElementById("design.weapons.energy"));
 				let dmw = new DesignMissileWeapon(document.getElementById("design.weapons.missile"));
 				UK.addListener("scanner.angle", dmw);
 
 				let ds = new DesignShip(document.getElementById("design.ship"));
 
+				research.setPlayer(GAME.players[0]);
 				dew.setPlayer(GAME.players[0]);
 				dmw.setPlayer(GAME.players[0]);
 				ds.setPlayer(GAME.players[0]);
@@ -77,6 +95,30 @@
 				localStorage.removeItem("spaceempire.players");
 				localStorage.removeItem("spaceempire.ids");
 			}
+
+			function createSVG()
+			{
+				let ns = "http://www.w3.org/2000/svg";
+				let svg = document.createElementNS(ns, "svg");
+				svg.setAttributeNS(null, "viewBox", "0 0 1000 1000");
+				svg.setAttributeNS(null, "width", "100%");
+				svg.setAttributeNS(null, "height", "100%");
+			
+				let shape1 = document.createElementNS(ns, "rect");
+				shape1.setAttributeNS(null, "width", "100%");
+				shape1.setAttributeNS(null, "height", "100%");
+				shape1.setAttributeNS(null, "fill", "red");
+											
+				let shape2 = document.createElementNS(ns, "circle");
+				shape2.setAttributeNS(null, "cx", "50%");
+				shape2.setAttributeNS(null, "cy", "50%");
+				shape2.setAttributeNS(null, "r",  "40%");
+				shape2.setAttributeNS(null, "fill", "green");
+			
+				svg.append(shape1, shape2);
+			
+				return svg;
+			}
 		</script>
 	</head>
 	<body onload="javascript:init();">
@@ -84,7 +126,7 @@
 		<div id="menu.main" class="menu"></div>
 		<hr/>
 		<div id="game.constants" class="design"></div>
-		<div id="technology" class="design"></div>
+		<div id="research" class="design"></div>
 		<div id="design.weapons.energy" class="design"></div>
 		<div id="design.weapons.missile" class="design"></div>
 		<div id="design.ship" class="design"></div>

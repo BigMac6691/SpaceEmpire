@@ -1,0 +1,57 @@
+For the first version there are only two types of drives FTL and sublight.
+
+Specific Impulse is measured in seconds, it means how long can a 1g acceleration be maintained for the initial mass of fuel with the given engine.
+    - Honestly this doesn't make sense to me as I think so many things could be effect the outcome
+    For example just having more fuel should mean I can burn longer right?
+    The only thing that could make it work is that to keep the acceleration constant adding fule means you have to burn at a higher initial rate, in fact the rate you burn drops off as the fuel is consumed.
+
+Future versions will consider different types of drives as follows:
+
+FTL
+    hyperspace
+        drive is moderately heavy
+        complex so costly to make
+        light fuel
+        with these types the energy is spent transitioning into and out of hyperspace, actually moving around is negligible
+    
+    warp
+        drive is moderately heavy
+        complex so costly to make
+        light fuel but guzzles it continuously
+        these types operate in normal space and needs lots of energy to move
+
+    wormhole
+        drive  is very heavy
+        very complex
+        uses almost no fuel as the wormhole provides lots of energy
+        travel is near instantaneous
+
+Sublights
+    chemical 
+        drive is very light
+        fuel massive
+        basic liquid/solid rocket
+        Say force is around 10,000,000 per kg of mass (let this be x)
+
+    ion 
+        drove is very light
+        simple and cheap
+        fuel is very light
+        thrust is very low
+        force is 5x? (per unit of mass just very slow)
+    
+    fission 
+        drive is moderately heavy if shielding people light otherwise
+        fuel is very heavy
+        force is 25x
+
+    fusion 
+        drive is heavy
+        fuel is light
+        force is 125x
+
+    antimatter
+        drive is very heavy
+        very complex
+        fuel vvery light
+        force 100,000x

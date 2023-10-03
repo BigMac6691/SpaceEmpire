@@ -41,6 +41,23 @@ input
     background-color: black;
 }
 
+/* Research */
+.researchDetails
+{
+    display: grid;
+    grid-template-columns: 75px auto;
+    column-gap: 1em;
+    margin: 1em 0;
+}
+
+.researchTables
+{
+    display: grid;
+    grid-template-columns: auto 25%;
+    column-gap: 1em;
+    margin: 1em 0;
+}
+
 /* Design */
 .design
 {

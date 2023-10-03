@@ -56,19 +56,32 @@ Consider:
 hit probability = Ps / (Ps + Pj) at the range the weapon was fired.
       For missiles that would be when they detonate (and trigger lasers)
 
+Next steps:
+1 Research
+2 Persistence
+3 Design
+4 Map
+5 Economics
+6 Movement
+7 Combat
 
 Need to settle on units and scale for all numbers to be somewhat consistent.
+Combat
+- Time is measured in seconds
+- Distance is measured in kilometers
+- Mass is measured in kilograms
+
+Design
+- Distance is measured in kilometers
+- Mass is measured in kilograms
 
 Notes on using tree view on ship design
       have all parts selected from drop down then added
       not just energy and missile but
             drives
-                  FTL (one kind or hyperspace/warp/wormhole variants?)
-                  chemical
-                  ion
-                  fission
-                  fusion
-                  antimatter
+                  FTL
+                  sublight
+                  wormhole
             electronic warfare
                   scanner
                   jammer
