@@ -53,21 +53,9 @@ class Curve
 
     createSVG()
     {
-        let svg = SVG.create({type: "svg", attributes : [{key: "viewBox", value: "0 0 1110 1110"}, {key: "width", value: "100%"}, {key: "height", value: "100%"}]});
+        let svg = SVG.create({type: "svg", attributes: {viewBox: "0 0 1110 1110", width: "100%", height: "100%"}});
 
-        let data =
-        {
-            type: "rect",
-            attributes:
-            [
-                {key: "x", value: 97},
-                {key: "y", value: 7},
-                {key: "width", value: 1006},
-                {key: "height", value: 1006},
-                {key: "stroke", value: "gold"},
-                {key: "stroke-width", value: 3}
-            ]
-        };
+        let data = {type: "rect", attributes: {x: 97, y: 7, width: 1006, height: 1006, stroke: "gold", "stroke-width": 3}};
         svg.append(SVG.create(data));
 
         let maxx = 0, maxy = 0;
@@ -77,41 +65,38 @@ class Curve
             maxy = Math.max(maxy, p[1]);
         });
 
-        data =
-        {
-            type: "text",
-            text: `${maxy}`,
-            attributes:
-            [
-                {key: "x", value: 7},
-                {key: "y", value: 27},
-                {key: "font-size", value: "2em"},
-                {key: "stroke", value: "gold"},
-            ]
-        };
+        data = {type: "text", text: `${maxy}`, attributes: {x: 7, y: 27, "font-size": "2em", stroke: "gold"}};
         svg.append(SVG.createText(data));
 
         let scalex = 1000 / maxx, scaley = 1000 / maxy;
+        let delta = 0.0001;
+        let path = `M ${100 + this.pts[0][0] * scalex} ${1010 - this.pts[0][1] * scaley}`;
 
-        this.pts.forEach(p => 
+        for(let i = 0; i < this.pts.length; i++)
+        {
+            let p = this.pts[i];
+            let dataPts = {type: "circle", attributes: {cx: 100 + p[0] * scalex, cy: 1010 - p[1] * scaley, r: 5, stroke: "lightgreen"}};
+    
+            svg.append(SVG.create(dataPts));
+
+            if(i < this.pts.length - 1)
             {
-                maxx = Math.max(maxx, p[0]);
-                maxy = Math.max(maxy, p[1]);
-    
-                let data =
-                {
-                    type: "circle",
-                    attributes:
-                    [
-                        {key: "cx", value: 100 + p[0] * scalex},
-                        {key: "cy", value: 1010 - p[1] * scaley},
-                        {key: "r", value: 5},
-                        {key: "stroke", value: "lightgreen"}
-                    ]
-                };
-    
-                svg.append(SVG.create(data));
-            });
+                let m = (p[1] - this.getValueAt(p[0] + delta))/(-delta);
+                let run = (this.pts[i + 1][0] - this.pts[i][0]) / 2;
+                let rise = m * run + p[1];
+
+                path += ` Q ${100 + (p[0] + run) * scalex} ${1010 - rise * scaley} ${100 + this.pts[i + 1][0] * scalex} ${1010 - this.pts[i + 1][1] * scaley}`;
+
+                console.log(`m=${m} run=${run} rise=${rise}`);
+            }
+
+        }
+
+        console.log(path);
+        console.log("(650) = " + this.getValueAt(650));
+        console.log(this.coefs);
+
+        svg.append(SVG.create({type: "path", attributes: {d: path, stroke: "white"}}));
 
         return svg;
     }

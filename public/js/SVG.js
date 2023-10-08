@@ -9,7 +9,8 @@ class SVG
         let n = document.createElementNS(this.NS, opts.type);
 
         if(opts.attributes)
-            opts.attributes.forEach(a => n.setAttribute(a.key, a.value));
+            for(const[k, v] of Object.entries(opts.attributes))
+                n.setAttribute(k, v);
 
         return n;
     }
@@ -19,7 +20,8 @@ class SVG
         let n = document.createElementNS(this.NS, opts.type);
 
         if(opts.attributes)
-            opts.attributes.forEach(a => n.setAttribute(a.key, a.value));
+            for(const[k, v] of Object.entries(opts.attributes))
+                n.setAttribute(k, v);
 
         n.append(document.createTextNode(opts.text));
 
