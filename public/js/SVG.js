@@ -17,7 +17,7 @@ class SVG
 
     static createText(opts)
     {
-        let n = document.createElementNS(this.NS, opts.type);
+        let n = document.createElementNS(this.NS, "text");
 
         if(opts.attributes)
             for(const[k, v] of Object.entries(opts.attributes))

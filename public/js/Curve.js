@@ -1,102 +1,95 @@
-class Curve
+class Curve 
 {
-    constructor(pts)
+    constructor(pts) 
     {
-        this.pts = pts;
+        this.points = pts;
         this.coefs = [];
 
         this.processPoints();
     }
 
-    processPoints()
+    processPoints() 
     {
-        let m = [];
+        const degree = this.points.length - 1;
+        const equations = [];
 
-        // build matrix
-        for(let r = 0; r < this.pts.length; r++)
+        for (let i = 0; i <= degree; i++) 
         {
-            m[r] = [];
+            const row = [];
 
-            for(let c = 0; c < this.pts.length; c++)
-                m[r][c] = this.pts[r][0] ** c;
+            for (let j = 0; j <= degree; j++)
+                row.push(this.points[i][0] ** j);
 
-            m[r].push(this.pts[r][1]);
+            row.push(this.points[i][1]);
+            equations.push(row);
         }
 
-        // isolate coefficients
-        for(let r = 0; r < this.pts.length; r++)
-            for(let i = 0; i < this.pts.length; i++)
-            {
-                if(i == r)
-                    continue;
-
-                let f = m[i][r] / m[r][r];
-
-                for(let j = 0; j < m[r].length; j++)
-                    m[i][j] = m[i][j] - f * m[r][j];
-            }
-
-        // simplify coefficients
-        for(let i = 0; i < this.pts.length; i++)
-            this.coefs[i] = m[i][this.pts.length] / m[i][i];
+        this.coefs = this.gaussElimination(equations);
     }
 
-    getValueAt(x)
+    gaussElimination(matrix) 
+    {
+        const n = matrix.length;
+    
+        for (let i = 0; i < n; i++) 
+        {
+          const diagonal = matrix[i][i];
+    
+          for (let j = i; j < n + 1; j++) 
+            matrix[i][j] /= diagonal;
+    
+          for (let k = 0; k < n; k++) 
+          {
+            if (k !== i) 
+            {
+              const factor = matrix[k][i];
+              
+              for (let j = i; j < n + 1; j++) 
+                matrix[k][j] -= factor * matrix[i][j];
+            }
+          }
+        }
+    
+        return matrix.map((row) => row[n]);
+    }
+
+    getValueAt(x) 
     {
         let sum = 0;
 
-        for(let p = 0; p < this.coefs.length; p++)
+        for (let p = 0; p < this.coefs.length; p++)
             sum += this.coefs[p] * x ** p;
 
         return sum;
     }
 
-    createSVG()
+    createSVG(scale) 
     {
-        let svg = SVG.create({type: "svg", attributes: {viewBox: "0 0 1110 1110", width: "100%", height: "100%"}});
+        let svg = SVG.create({ type: "svg", attributes: {viewBox: "0 0 1000 1000", width: "100%", height: "100%", transform: "scale(1, -1)"}});
+        let maxx = this.points.reduce((max, num) => {return max > num[0] ? max : num[0]}, 0);
+        let ys = [];
 
-        let data = {type: "rect", attributes: {x: 97, y: 7, width: 1006, height: 1006, stroke: "gold", "stroke-width": 3}};
-        svg.append(SVG.create(data));
+        for(let i = 0; i <= maxx; i += maxx / 200)
+            ys.push([i, this.getValueAt(i)]);
+        
+        let maxy = ys.reduce((max, num) => {return max[1] > num[1] ? max : num}, [0, 0]);
+        let scalex = scale ? 1000 / maxx : 1,
+            scaley = scale ? 1000 / maxy[1] : 1;
+        let path = `M `;
 
-        let maxx = 0, maxy = 0;
-        this.pts.forEach(p => 
+        for (let i = 0; i < this.points.length; i++) 
+            svg.append(SVG.create({type: "circle", attributes: {"cx": this.points[i][0] * scalex, "cy": this.points[i][1] * scaley, r: 5, stroke: "lightgreen"}}));
+
+        for(let i = 0; i <= maxx; i += maxx / 200)
+            path += `${i * scalex},${Math.floor(100 * ys.shift()[1] * scaley + 0.5) / 100} `;
+
+        svg.append(SVG.create({ type: "path", attributes: {d: path, stroke: "red", fill: "transparent"}}));
+
+        if(scale)
         {
-            maxx = Math.max(maxx, p[0]);
-            maxy = Math.max(maxy, p[1]);
-        });
-
-        data = {type: "text", text: `${maxy}`, attributes: {x: 7, y: 27, "font-size": "2em", stroke: "gold"}};
-        svg.append(SVG.createText(data));
-
-        let scalex = 1000 / maxx, scaley = 1000 / maxy;
-        let delta = 0.0001;
-        let path = `M ${100 + this.pts[0][0] * scalex} ${1010 - this.pts[0][1] * scaley}`;
-
-        for(let i = 0; i < this.pts.length; i++)
-        {
-            let p = this.pts[i];
-            let dataPts = {type: "circle", attributes: {cx: 100 + p[0] * scalex, cy: 1010 - p[1] * scaley, r: 5, stroke: "lightgreen"}};
-    
-            svg.append(SVG.create(dataPts));
-
-            if(i < this.pts.length - 1)
-            {
-                let m = (p[1] - this.getValueAt(p[0] + delta))/(-delta);
-                let run = (this.pts[i + 1][0] - this.pts[i][0]) / 2;
-                let rise = m * run + p[1];
-
-                path += ` Q ${100 + (p[0] + run) * scalex} ${1010 - rise * scaley} ${100 + this.pts[i + 1][0] * scalex} ${1010 - this.pts[i + 1][1] * scaley}`;
-
-                console.log(`m=${m} run=${run} rise=${rise}`);
-            }
-
+            svg.append(SVG.create({type: "line", attributes: {x1: maxy[0] * scalex, y1: 0, x2: maxy[0] * scalex, y2: 1000, stroke: "lightblue"}}));
+            svg.append(SVG.createText({text: Math.floor(maxy[1]), attributes: {stroke: "lightblue", fill: "lightblue", style: "font-size: 60", transform: `scale(1, -1) translate(${maxy[0] * scalex - 90}, -500) `}}));
         }
-
-        console.log(path);
-        console.log("(650) = " + this.getValueAt(650));
-        console.log(this.coefs);
-
-        svg.append(SVG.create({type: "path", attributes: {d: path, stroke: "white"}}));
 
         return svg;
     }

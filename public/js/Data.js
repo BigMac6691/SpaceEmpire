@@ -51,6 +51,7 @@ const TECH =
         data:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,125],[1000,60]]},
+			// {id: "mass", type: "curve", data: [[0,1],[100,10],[500,625],[1000,60]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
 		    {id: "cost", type: "curve", data: [[0,1],[100,20],[500,50],[1000,200]]}
         ]

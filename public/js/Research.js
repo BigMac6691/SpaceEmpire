@@ -55,7 +55,7 @@ class Research
         });
 
         tables.append(tableBody);
-        settings.append(tables, view.fn.createSVG());
+        settings.append(tables, view.fn.createSVG(true));
 
         this.body.append(details, settings);
     }
