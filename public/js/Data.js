@@ -48,7 +48,7 @@ const TECH =
 	{
 		id: "emitter.power",
 		title: "Beam Power",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,125],[1000,60]]},
 			// {id: "mass", type: "curve", data: [[0,1],[100,10],[500,625],[1000,60]]},
@@ -59,7 +59,7 @@ const TECH =
 	{
 		id: "frequency",
 		title: "Frequency",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -69,7 +69,7 @@ const TECH =
 	{
 		id: "bore",
 		title: "Bore",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -80,7 +80,7 @@ const TECH =
 	{
 		id: "capacitor",
 		title: "Capacitor",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -90,7 +90,7 @@ const TECH =
 	{
 		id: "coupling",
 		title: "Coupling",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -101,7 +101,7 @@ const TECH =
 	{
 		id: "armour",
 		title: "Armour",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -111,7 +111,7 @@ const TECH =
 	{
 		id: "drive",
 		title: "Drive",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -122,7 +122,7 @@ const TECH =
 	{
 		id: "warheads",
 		title: "Warheads",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -133,7 +133,7 @@ const TECH =
 	{
 		id: "decoys",
 		title: "Decoys",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -144,7 +144,7 @@ const TECH =
 	{
 		id: "warhead.power",
 		title: "Warhead Power",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -155,7 +155,7 @@ const TECH =
 	{
 		id: "computer",
 		title: "Computer",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -165,7 +165,7 @@ const TECH =
 	{
 		id: "scanner",
 		title: "Scanner",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -176,7 +176,7 @@ const TECH =
 	{
 		id: "jammer",
 		title: "Jammer",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},
@@ -187,7 +187,7 @@ const TECH =
 	{
 		id: "comms",
 		title: "Comms",
-        data:
+        specs:
         [
 		    {id: "mass", type: "curve", data: [[0,1],[100,10],[500,60],[1000,125]]},
 		    {id: "volume", type: "curve", data: [[0,1],[100,5]]},

@@ -2,7 +2,12 @@ class Curve
 {
     constructor(pts) 
     {
-        this.points = pts;
+        this.setPoints(pts);
+    }
+
+    setPoints(pts)
+    {
+        this.points = JSON.parse(JSON.stringify(pts));
         this.coefs = [];
 
         this.processPoints();

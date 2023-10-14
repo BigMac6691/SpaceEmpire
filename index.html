@@ -24,7 +24,7 @@
 		<script src="js/I18N.js"></script>
 		<script src="js/List.js"></script>
 		<script src="js/DisplayNumber.js"></script>
-		<script src="js/Research.js"></script>
+		<script src="js/ResearchAdmin.js"></script>
 		<script src="js/Data.js"></script>
 		<script src="js/SVG.js"></script>
 		<script>
@@ -52,18 +52,23 @@
 				//tech.init();
 				TECH.forEach(t => 
 				{
-					t.data.forEach(d =>
+					let temp = new Map();
+
+					t.specs.forEach(spec =>
 					{
-						if(d.type === "curve")
-							d.fn = new Curve(d.data);
+						if(spec.type === "curve")
+							spec.fn = new Curve(spec.data);
+
+						temp.set(spec.id, spec);
 					});
 
+					t.specs = temp;
 					tech.set(t.id, t);
 				});
 				
 				GAME.players[0].tech = tech;
 
-				let research = new Research(document.getElementById("research"));
+				let research = new ResearchAdmin(document.getElementById("research"));
 				let dew = new DesignEnergyWeapon(document.getElementById("design.weapons.energy"));
 				let dmw = new DesignMissileWeapon(document.getElementById("design.weapons.missile"));
 				UK.addListener("scanner.angle", dmw);

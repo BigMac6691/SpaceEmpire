@@ -65,6 +65,10 @@ Next steps:
 6 Movement
 7 Combat
 
+Do I18N on the server?
+      When the data files are being prepared check with the language setting and construct accordingly?
+      Otherwise all displayable text will have to be in one class and retrieved.
+
 Need to settle on units and scale for all numbers to be somewhat consistent.
 Combat
 - Time is measured in seconds

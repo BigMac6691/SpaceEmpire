@@ -14,6 +14,11 @@ input
     padding: 0.4em 0.5em;
 }
 
+svg
+{
+    border: 1px solid white;
+}
+
 /* Menu */
 .menu
 {
@@ -54,8 +59,15 @@ input
 {
     display: grid;
     grid-template-columns: auto 25%;
+    align-items: start;
     column-gap: 1em;
     margin: 1em 0;
+}
+
+.researchTables th
+{
+    text-align: center;
+    background-color: darkslategray;
 }
 
 /* Design */
