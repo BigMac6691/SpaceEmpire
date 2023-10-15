@@ -70,6 +70,11 @@ svg
     background-color: darkslategray;
 }
 
+.researchTables td
+{
+    text-align: center;
+}
+
 /* Design */
 .design
 {

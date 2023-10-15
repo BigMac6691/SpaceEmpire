@@ -68,7 +68,7 @@ class Curve
         return sum;
     }
 
-    createSVG(scale) 
+    createSVG(scale, at) 
     {
         let svg = SVG.create({ type: "svg", attributes: {viewBox: "0 0 1000 1000", width: "100%", height: "100%", transform: "scale(1, -1)"}});
         let maxx = this.points.reduce((max, num) => {return max > num[0] ? max : num[0]}, 0);
@@ -92,8 +92,12 @@ class Curve
 
         if(scale)
         {
+            svg.append(SVG.create({type: "line", attributes: {x1: at * scalex, y1: 0, x2: at * scalex, y2: 1000, stroke: "lightgreen"}}));
             svg.append(SVG.create({type: "line", attributes: {x1: maxy[0] * scalex, y1: 0, x2: maxy[0] * scalex, y2: 1000, stroke: "lightblue"}}));
-            svg.append(SVG.createText({text: Math.floor(maxy[1]), attributes: {stroke: "lightblue", fill: "lightblue", style: "font-size: 60", transform: `scale(1, -1) translate(${maxy[0] * scalex - 90}, -500) `}}));
+
+            let coords = `${Math.floor(maxy[0])},${Math.floor(maxy[1])}`;
+
+            svg.append(SVG.createText({text: coords, attributes: {stroke: "lightblue", fill: "lightblue", style: "font-size: 40", transform: `scale(1, -1) translate(${maxy[0] * scalex - (20 * coords.length)}, -500) `}}));
         }
 
         return svg;
