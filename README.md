@@ -69,6 +69,11 @@ Do I18N on the server?
       When the data files are being prepared check with the language setting and construct accordingly?
       Otherwise all displayable text will have to be in one class and retrieved.
 
+Everything is a curve!
+      with one point    => y = pt0
+      with two points   => y = c1*pt1^1 + pt0
+      with three points => y = c2*pt2^2 + c1*pt1^1 + pt0
+
 Need to settle on units and scale for all numbers to be somewhat consistent.
 Combat
 - Time is measured in seconds

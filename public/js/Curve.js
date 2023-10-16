@@ -67,39 +67,4 @@ class Curve
 
         return sum;
     }
-
-    createSVG(scale, at) 
-    {
-        let svg = SVG.create({ type: "svg", attributes: {viewBox: "0 0 1000 1000", width: "100%", height: "100%", transform: "scale(1, -1)"}});
-        let maxx = this.points.reduce((max, num) => {return max > num[0] ? max : num[0]}, 0);
-        let ys = [];
-
-        for(let i = 0; i <= maxx; i += maxx / 200)
-            ys.push([i, this.getValueAt(i)]);
-        
-        let maxy = ys.reduce((max, num) => {return max[1] > num[1] ? max : num}, [0, 0]);
-        let scalex = scale ? 1000 / maxx : 1,
-            scaley = scale ? 1000 / maxy[1] : 1;
-        let path = `M `;
-
-        for (let i = 0; i < this.points.length; i++) 
-            svg.append(SVG.create({type: "circle", attributes: {"cx": this.points[i][0] * scalex, "cy": this.points[i][1] * scaley, r: 5, stroke: "lightgreen"}}));
-
-        for(let i = 0; i <= maxx; i += maxx / 200)
-            path += `${i * scalex},${Math.floor(100 * ys.shift()[1] * scaley + 0.5) / 100} `;
-
-        svg.append(SVG.create({ type: "path", attributes: {d: path, stroke: "red", fill: "transparent"}}));
-
-        if(scale)
-        {
-            svg.append(SVG.create({type: "line", attributes: {x1: at * scalex, y1: 0, x2: at * scalex, y2: 1000, stroke: "lightgreen"}}));
-            svg.append(SVG.create({type: "line", attributes: {x1: maxy[0] * scalex, y1: 0, x2: maxy[0] * scalex, y2: 1000, stroke: "lightblue"}}));
-
-            let coords = `${Math.floor(maxy[0])},${Math.floor(maxy[1])}`;
-
-            svg.append(SVG.createText({text: coords, attributes: {stroke: "lightblue", fill: "lightblue", style: "font-size: 40", transform: `scale(1, -1) translate(${maxy[0] * scalex - (20 * coords.length)}, -500) `}}));
-        }
-
-        return svg;
-    }
 }

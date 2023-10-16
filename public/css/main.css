@@ -50,7 +50,7 @@ svg
 .researchDetails
 {
     display: grid;
-    grid-template-columns: 75px auto;
+    grid-template-columns: 125px auto 25%;
     column-gap: 1em;
     margin: 1em 0;
 }

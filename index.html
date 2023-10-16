@@ -24,7 +24,7 @@
 		<script src="js/I18N.js"></script>
 		<script src="js/List.js"></script>
 		<script src="js/DisplayNumber.js"></script>
-		<script src="js/ResearchAdmin.js"></script>
+		<script src="js/TechnologyAdmin.js"></script>
 		<script src="js/Data.js"></script>
 		<script src="js/SVG.js"></script>
 		<script>
@@ -41,7 +41,7 @@
 
 				let menu = new Menu(document.getElementById("menu.main"));
 				menu.addItem("Game Constants", document.getElementById("game.constants"));
-				menu.addItem("Research", document.getElementById("research"));
+				menu.addItem("Technology Admin", document.getElementById("techAdmin"));
 				menu.addItem("Energy", document.getElementById("design.weapons.energy"));
 				menu.addItem("Missile", document.getElementById("design.weapons.missile"));
 				menu.addItem("Ship", document.getElementById("design.ship"));
@@ -69,14 +69,13 @@
 				
 				GAME.players[0].tech = tech;
 
-				let research = new ResearchAdmin(document.getElementById("research"));
+				let research = new TechnologyAdmin(document.getElementById("techAdmin"), tech);
 				let dew = new DesignEnergyWeapon(document.getElementById("design.weapons.energy"));
 				let dmw = new DesignMissileWeapon(document.getElementById("design.weapons.missile"));
 				UK.addListener("scanner.angle", dmw);
 
 				let ds = new DesignShip(document.getElementById("design.ship"));
 
-				research.setPlayer(GAME.players[0]);
 				dew.setPlayer(GAME.players[0]);
 				dmw.setPlayer(GAME.players[0]);
 				ds.setPlayer(GAME.players[0]);
@@ -134,7 +133,7 @@
 		<div id="menu.main" class="menu"></div>
 		<hr/>
 		<div id="game.constants" class="design"></div>
-		<div id="research" class="design"></div>
+		<div id="techAdmin" class="design"></div>
 		<div id="design.weapons.energy" class="design"></div>
 		<div id="design.weapons.missile" class="design"></div>
 		<div id="design.ship" class="design"></div>
