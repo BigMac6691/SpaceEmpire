@@ -69,10 +69,22 @@ Do I18N on the server?
       When the data files are being prepared check with the language setting and construct accordingly?
       Otherwise all displayable text will have to be in one class and retrieved.
 
-Everything is a curve!
-      with one point    => y = pt0
-      with two points   => y = c1*pt1^1 + pt0
-      with three points => y = c2*pt2^2 + c1*pt1^1 + pt0
+Technology Admin
+      Technology
+            No master list
+            Use fields to edit id and title
+            Can create new ones
+                  Use the screen to add icon, description, specifications
+                  Use fields to add id and title
+      Specifications
+            Add/remove to selected technology
+            Must select from master list
+            Master list can be edited
+                  Use dialog to create id and type, also add title to I18N
+      Systems
+            Can only add technologies to selected systems.
+            Can create new systems
+                  Create id and title and use a collapsable tree to manage technologies?
 
 Need to settle on units and scale for all numbers to be somewhat consistent.
 Combat
