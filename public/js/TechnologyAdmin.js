@@ -236,14 +236,16 @@ class TechnologyAdmin
                 ys.push([x, spec.fn.getValueAt(x)]);
         
             let maxy = ys.reduce((max, num) => {return max[1] > num[1] ? max : num}, [0, 0]);
-            let scalex = maxx ? 1000 / maxx : 1, scaley = maxy[1] ? 995 / maxy[1] : 0.995;
+            let miny = ys.reduce((min, num) => {return min[1] < num[1] ? min : num}, [0, Infinity]);
+            let range = Math.abs(maxy[1]) + Math.abs(miny[1]);
+            let scalex = maxx ? 1000 / maxx : 1, scaley = maxy[1] ? 990 / range : 0.99;
             let path = `M `;
 
             for (let i = 0; i < spec.data.length; i++) 
-                svg.append(SVG.create({type: "circle", attributes: {"cx": spec.data[i][0] * scalex, "cy": spec.data[i][1] * scaley, r: 5, stroke: "lightgreen"}}));
+                svg.append(SVG.create({type: "circle", attributes: {"cx": spec.data[i][0] * scalex, "cy": 5 + (Math.abs(miny[1]) + spec.data[i][1]) * scaley, r: 5, stroke: "lightgreen"}}));
 
             for(let i = 0; i < ys.length; i++)
-                path += `${ys[i][0] * scalex},${Math.floor(100 * ys[i][1] * scaley + 0.5) / 100} `;
+                path += `${ys[i][0] * scalex},${5 + Math.floor(100 * (Math.abs(miny[1]) + ys[i][1]) * scaley + 0.5) / 100} `;
 
             svg.append(SVG.create({ type: "path", attributes: {d: path, stroke: "red", "stroke-width": "2", fill: "transparent"}}));
 
@@ -252,6 +254,18 @@ class TechnologyAdmin
             svg.append(SVG.create({type: "line", attributes: {x1: +this.valueAt.value * scalex, y1: 0, x2: +this.valueAt.value * scalex, y2: 1000, stroke: "lightgreen"}}));
             svg.append(SVG.create({type: "line", attributes: {x1: xOfMaxy, y1: 0, x2: xOfMaxy, y2: 1000, stroke: "lightblue"}}));
 
+            if(miny[1] < 0)
+            {
+                let xOfMinY = miny[0] * scalex;
+
+                svg.append(SVG.create({type: "line", attributes: {x1: xOfMinY, y1: 0, x2: xOfMinY, y2: 1000, stroke: "lightblue"}}));
+                svg.append(SVG.create({type: "line", attributes: {x1: 0, y1: -miny[1] * scaley, x2: 1000, y2: -miny[1] * scaley, stroke: "lightgray"}}));
+
+                let coords = `${Math.floor(miny[0] + 0.5)},${Math.floor(miny[1] + 0.5)}`;
+
+                svg.append(SVG.createText({text: coords, attributes: {stroke: "lightblue", fill: "lightblue", style: "font-size: 40", transform: `scale(1, -1) translate(${xOfMinY < 500 ? xOfMinY + 10 : xOfMinY - (20 * coords.length)}, -250) `}}));
+            }
+            
             let coords = `${Math.floor(maxy[0] + 0.5)},${Math.floor(maxy[1] + 0.5)}`;
 
             svg.append(SVG.createText({text: coords, attributes: {stroke: "lightblue", fill: "lightblue", style: "font-size: 40", transform: `scale(1, -1) translate(${xOfMaxy < 500 ? xOfMaxy + 10 : xOfMaxy - (20 * coords.length)}, -500) `}}));
